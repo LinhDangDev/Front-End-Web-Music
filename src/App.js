@@ -1,4 +1,4 @@
-// import logo from '%PUBLIC_URL%/logo.svg';
+import axios from 'axios';
 import './App.css';
 import NavBar from './component/NavBar'; 
 import Loader from './component/Loader';
@@ -7,6 +7,7 @@ import Main from './component/Main';
 import HeaderHero from './component/HeaderHero';
 import SupportChatMode from './component/SupportChatMode';
 import Footer from './component/Footer';
+import Backtotop from './component/Backtotop';
 
 function App() {
   return (
@@ -17,9 +18,8 @@ function App() {
       <SearchMode />
       <HeaderHero/>
       <Main/>
-
       <Footer />
-      
+      <Backtotop/>
     </div>
     
   );

@@ -9,54 +9,6 @@ window.addEventListener('load', () => {
 });
 
 
-// ## NAVBAR MOBILE
-function navbarMobileToggle() {
-    document.getElementById("navbarMobileToggle").classList.toggle("navbarMobileToggle");
-}
-
-// SWITCH MODE
-function switchMode() {
-    document.body.classList.toggle("switchMode");
-    document.getElementById("switchModeBtnDark").classList.toggle("switchModeBtnDarkToggle");
-    document.getElementById("switchModeBtnLight").classList.toggle("switchModeBtnLightToggle");
-
-    document.getElementById("logoFooterModeLight").classList.toggle("logoFooterModeLightToggle");
-    document.getElementById("logoFooterModeDark").classList.toggle("logoFooterModeDarkToggle");
-}
-
-// SEARCH MODE
-function searchMode() {
-    document.getElementById("searchMode").classList.toggle("searchMode");
-    document.getElementById("overlaySearchMode").classList.toggle("overlaySearchMode");
-}
-
-// AVATAR DROPDOWN
-function avatarDropdown() {
-    document.getElementById("avatarDropdown").classList.toggle("avatarDropdown");
-}
-
-// SUPPORT & CHAT MODE
-function supportChatMode() {
-    document.getElementById("supportChatMode").classList.toggle("supportChatMode");
-}
-
-
-// ## BACK TOP
-const backTop = document.getElementById("backTop");
-const navbarFixed = document.getElementById("navbarFixed");
-
-window.addEventListener("scroll", () => {
-    if(window.scrollY > 200) {
-        backTop.classList.add("back-top-active");
-    } else if(window.scrollY > 50) {
-        navbarFixed.classList.add("nav-fixed-active");
-    } else {
-        backTop.classList.remove("back-top-active");
-        navbarFixed.classList.remove("nav-fixed-active");
-    }
-});
-
-
 // ## LIKE MUSIC HEADER
 function likeMusicHeader() {
     document.getElementById("likeMusicHeader").classList.toggle("likeMusicHeaderToggle");
