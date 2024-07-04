@@ -5,7 +5,7 @@
 window.addEventListener('load', () => {
     setTimeout( () => {
         document.querySelector(".loader-warpper").classList.toggle("loader-warpper-hide");
-    }, 2000);
+    }, 200);
 });
 
 
