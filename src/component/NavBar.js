@@ -12,9 +12,7 @@ function navbarMobileToggle() {
 }
 
 // SWITCH MODE
-
 function switchMode() {
-    setIsDarkMode(!isDarkMode); // Toggle between true and false
     document.body.classList.toggle("switchMode");
     document.getElementById("switchModeBtnDark").classList.toggle("switchModeBtnDarkToggle");
     document.getElementById("switchModeBtnLight").classList.toggle("switchModeBtnLightToggle");
@@ -22,6 +20,7 @@ function switchMode() {
     document.getElementById("logoFooterModeLight").classList.toggle("logoFooterModeLightToggle");
     document.getElementById("logoFooterModeDark").classList.toggle("logoFooterModeDarkToggle");
 }
+
 // SEARCH MODE
 function searchMode() {
     document.getElementById("searchMode").classList.toggle("searchMode");
@@ -70,26 +69,12 @@ return (
     </ul>
     </ul>
     <ul>
-    <a 
-        href="javascript:void(0)" 
-        onClick={switchMode} 
-        id="switchModeBtnDark" 
-        title="Switch Dark Mode" 
-        aria-label="Switch Dark Mode" 
-        style={{ display: isDarkMode ? 'none' : 'block' }}
-        >
+    <a href="javascript:void(0)" onClick={switchMode} id="switchModeBtnDark" title="Switch Dark Mode" aria-label="Switch Dark Mode" style={{ display: isDarkMode ? 'none' : 'block' }}>
         <span className="far fa-moon"></span>
-        </a>
-        <a 
-        href="javascript:void(0)" 
-        onClick={switchMode} 
-        id="switchModeBtnLight" 
-        title="Switch Light Mode" 
-        aria-label="Switch Light Mode" 
-        style={{ display: !isDarkMode ? 'none' : 'block' }} 
-        >
+    </a>
+    <a href="javascript:void(0)" onClick={switchMode} id="switchModeBtnLight" title="Switch Light Mode" aria-label="Switch Light Mode" style={{ display: !isDarkMode ? 'none' : 'block' }}>
         <span className="far fa-sun"></span>
-        </a>
+    </a>
     <a href="javascript:void(0)" onClick={searchMode} title="Search" aria-label="Search">
         <span className="far fa-search"></span>
     </a>

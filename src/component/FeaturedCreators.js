@@ -1,28 +1,32 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
 const FeaturedCreators = () => {
     return (
         <section className="section-featured-creators" id="featured_creators">
             <div>
                 <h2>Featured Creators</h2>
-                <p><a href="#">See all</a></p>
+                <p>  <Link to="#">See all</Link></p>
             </div>
 
             <div className="card-grid-slider">
                 {creatorData.map((group, groupIndex) => (
-                    <div className="card-group-grid" key={groupIndex}>
-                        {group.map((creator) => (
-                            <div className="card-simple" key={creator.id}>
-                                <a href="post.html">
-                                    <figure>
-                                        <img src={creator.imageUrl} alt={creator.name} />
-                                    </figure>
-                                    <h3>{creator.name}</h3>
-                                </a>
-                                <p><a href="user.html">{creator.artist}</a></p>
-                            </div>
-                        ))}
+                <div className="card-group-grid" key={groupIndex}>
+                    {group.map((creator) => (
+                    <div className="card-simple" key={creator.id}>
+                        <Link to={`/artist/${creator.id}`}> 
+                        <figure>
+                            <img src={creator.imageUrl} alt={creator.name} />
+                        </figure>
+                        <h3>{creator.name}</h3>
+                        </Link>
+                        <p>
+                        <Link to={`/artist/${creator.artistId}`}> 
+                            {creator.artist}
+                        </Link>
+                        </p>
                     </div>
+                    ))}
+                </div>
                 ))}
             </div>
         </section>
@@ -36,12 +40,14 @@ const creatorData = [
             id: 1,
             name: 'Acceleration',
             artist: 'Amadea Music Productions',
+            artistId: 1, 
             imageUrl: 'images/covers/Acceleration-Amadea-Music-Productions-400x400.jpeg'
         },
         {
             id: 2,
             name: 'Charged',
             artist: 'Charged',
+            artistId: 2, 
             imageUrl: 'images/covers/Charged-400x400.jpg'
         }
     ],

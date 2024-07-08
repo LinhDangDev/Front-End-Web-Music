@@ -1,12 +1,11 @@
 
 
 export default function Loader() {
-    
     return (
-                // <!-- LOADER -->
-                <div class="loader-warpper" id="loader">
-                <div class="loader"></div>
-            </div>
+        // <!-- LOADER -->
+        <div className="loader-warpper" id="loader">
+            <div className="loader"></div>
+        </div>
 
     );
 }
