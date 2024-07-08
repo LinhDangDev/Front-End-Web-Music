@@ -1,4 +1,4 @@
-import Explore from "./Expplore";
+import Explore from "./Explore";
 import FeaturedCreators from "./FeaturedCreators"; 
 import Trending from "./Trending";
 import Category from "./Category";
