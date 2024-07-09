@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import SongService from '../../services/SongService';
 import Loader from './Loader';
 import { formatTime } from '../../utils/timeUtils';
-import './Song.css'; // Import CSS file for styling
+import './Song.css'; 
 
 const Song = () => {
   const { id } = useParams();
@@ -12,6 +12,8 @@ const Song = () => {
   const [error, setError] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [isLooping, setIsLooping] = useState(false);
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -56,7 +58,19 @@ const Song = () => {
   };
 
   const handleLoadedMetadata = () => {
+    setDuration(audioRef.current.duration);
     setCurrentTime(0);
+  };
+
+  const handleProgressChange = (e) => {
+    const audio = audioRef.current;
+    audio.currentTime = (e.target.value / 100) * duration;
+    setCurrentTime(audio.currentTime);
+  };
+
+  const handleLoopClick = () => {
+    setIsLooping(!isLooping);
+    audioRef.current.loop = !isLooping;
   };
 
   if (isLoading) {
@@ -91,6 +105,19 @@ const Song = () => {
           </p>
         </div>
 
+        <div className="song-progress">
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={(currentTime / duration) * 100 || 0}
+            onChange={handleProgressChange}
+          />
+          <div className="time-display">
+            <span>{formatTime(currentTime)}</span> / <span>{formatTime(duration)}</span>
+          </div>
+        </div>
+
         <div className="player-controls">
           <button className="control-button">
             <span className="far fa-random"></span>
@@ -104,8 +131,8 @@ const Song = () => {
           <button className="control-button">
             <span className="far fa-step-forward"></span>
           </button>
-          <button className="control-button">
-            <span className="far fa-refresh"></span>
+          <button className="control-button" onClick={handleLoopClick}>
+            <span className={`far fa-refresh ${isLooping ? 'active' : ''}`}></span>
           </button>
         </div>
 
@@ -123,7 +150,6 @@ const Song = () => {
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
       />
-      <div className="current-time">{formatTime(currentTime)}</div>
     </div>
   );
 };

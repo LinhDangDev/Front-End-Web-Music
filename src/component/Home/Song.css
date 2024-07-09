@@ -107,3 +107,41 @@
     font-size: 1rem;
     color: #888;
     }
+
+    .song-progress {
+        width: 95%; /* Kéo dài thanh progress gần như full width */
+        max-width: 500px; 
+        margin: 20px 0; 
+    }
+    
+    .song-progress input[type="range"] {
+    width: 100%; 
+    -webkit-appearance: none; 
+    appearance: none; 
+    height: 4px; /* Giảm chiều cao của thanh */
+    background: #ddd; 
+    outline: none; 
+    border-radius: 20px; /* Tăng border-radius để thanh bo tròn hơn */
+    }
+    
+    .song-progress input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #007bff;
+    cursor: pointer;
+    }
+    
+    .time-display {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 5px;
+    }
+    
+    .control-button .fa-refresh.active {
+    color: #007bff; 
+    }
