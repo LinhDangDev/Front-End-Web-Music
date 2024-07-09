@@ -1,197 +1,131 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import PlaylistPost from './PlayListPost'; 
-import RelatedMusic from './RelatedMusic'; // Sửa đường dẫn import
-import MusicPlayer from './MusicPlayer'; // Sửa đường dẫn import
-import FullPlayer from './FullPlayer'; // Sửa đường dẫn import
-import Download from './Download'; // Sửa đường dẫn import
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import SongService from '../../services/SongService';
 import Loader from './Loader';
-import NavBar from './NavBar';
-import SupportChatMode from './SupportChatMode';
-import SearchMode from './SearchMode';
-import HeaderHero from './HeaderHero';
-import Footer from './Footer';
-import Backtotop from './Backtotop';
+import { formatTime } from '../../utils/timeUtils';
+import './Song.css'; // Import CSS file for styling
 
+const Song = () => {
+  const { id } = useParams();
+  const [song, setSong] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const audioRef = useRef(null);
 
-// const Songs = () => {
-//     const { id } = useParams();
-//     const [songData, setSongData] = useState(null);
-//     const [isLoading, setIsLoading] = useState(true);
-
-// useEffect(() => {
-//     // Simulate fetching song data from API
-//     const fetchData = async () => {
-//     try {
-//         // Replace with actual API call
-//         const response = await new Promise((resolve) => {
-//         setTimeout(() => {
-//             resolve({
-//             data: {
-//                 playlist: {
-//                 title: 'Playlist for Song ID: ' + id,
-//                 artist: 'Ultima Trailer Music',
-//                 year: 2021,
-//                 songs: [
-//                     {
-//                     id: 1,
-//                     name: 'Helix Angle',
-//                     duration: '1:39',
-//                     src: 'musics/1.mp3',
-//                     },
-//                     {
-//                     id: 2,
-//                     name: 'Enforcement',
-//                     duration: '1:30',
-//                     src: 'musics/1.mp3',
-//                     },
-//                     // ... Các bài hát khác
-//                 ],
-//                 },
-//                 relatedMusics: [
-//                 [
-//                     {
-//                     title: 'Undefeated',
-//                     artist: 'Amadea Music Productions',
-//                     cover: 'images/covers/Undefeated-Amadea-Music-Productions-400x400.jpeg',
-//                     },
-//                     // ... Các bài hát khác trong nhóm 1
-//                 ],
-//                 // ... Các nhóm nhạc khác
-//                 ],
-//             },
-//             });
-//         }, 1000); // Simulate 1-second API call delay
-//         });
-//         setSongData(response.data);
-//     } catch (error) {
-//         console.error('Error fetching data:', error);
-//     } finally {
-//         setIsLoading(false);
-//     }
-//     };
-
-//     fetchData();
-// }, [id]);
-
-const Songs = () => {
-    const playlist = {
-        title: 'Playlist',
-        artist: 'Ultima Trailer Music',
-        year: 2021,
-        songs: [
-        {
-        id: 1,
-        name: 'Helix Angle',
-        duration: '1:39',
-        src: 'musics/1.mp3',
-        },
-        {
-        id: 2,
-        name: 'Enforcement',
-        duration: '1:30',
-        src: 'musics/1.mp3',
-        },
-        // ... Các bài hát khác
-    ],
+  useEffect(() => {
+    const fetchSong = async () => {
+      try {
+        setIsLoading(true);
+        const response = await SongService.getSongForPlay(id);
+        if (response.code === 1000) {
+          setSong(response.result);
+        } else {
+          setError('Failed to fetch song details.');
+        }
+      } catch (error) {
+        console.error('Error fetching song:', error);
+        setError('An error occurred while fetching song details.');
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    const relatedMusics = [
-    [
-        {
-        title: 'Undefeated',
-        artist: 'Amadea Music Productions',
-        cover: 'images/covers/Undefeated-Amadea-Music-Productions-400x400.jpeg',
-        },
-        // ... Các bài hát khác trong nhóm 1
-    ],
-    // ... Các nhóm nhạc khác
-    ];
+    fetchSong();
+  }, [id]);
 
-    const [currentSongIndex, setCurrentSongIndex] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [isLiked, setIsLiked] = useState(false);
-    const [audio] = useState(new Audio());
+  useEffect(() => {
+    if (!isLoading && song && audioRef.current) {
+      audioRef.current.load();
+    }
+  }, [isLoading, song]);
 
-    const handleSongClick = (index) => {
-    setCurrentSongIndex(index);
-    setIsPlaying(true);
-    audio.src = playlist.songs[index].src;
-    audio.play();
-    };
-
-    const handlePlayPauseClick = () => {
+  const handlePlayPause = () => {
+    const audio = audioRef.current;
     if (isPlaying) {
-        audio.pause();
+      audio.pause();
     } else {
-        audio.play();
+      audio.play();
     }
     setIsPlaying(!isPlaying);
-    };
+  };
 
-    const handleLikeClick = () => {
-    setIsLiked(!isLiked);
-    };
+  const handleTimeUpdate = () => {
+    setCurrentTime(audioRef.current.currentTime);
+  };
 
-    const handleNextSong = () => {
-    const nextIndex = (currentSongIndex + 1) % playlist.songs.length;
-    handleSongClick(nextIndex);
-    };
+  const handleLoadedMetadata = () => {
+    setCurrentTime(0);
+  };
 
-    const handlePrevSong = () => {
-    const prevIndex =
-        (currentSongIndex - 1 + playlist.songs.length) % playlist.songs.length;
-    handleSongClick(prevIndex);
-    };
+  if (isLoading) {
+    return <Loader />;
+  }
 
-    audio.onended = () => {
-    handleNextSong();
-    };
-    // if (isLoading) {
-    //     return <div>Loading...</div>;
-    //   }
-    
-    //   if (!songData) {
-    //     return <div>Song not found.</div>;
-    //   }
-    return (
-        <div>
-        <Loader/>
-        <NavBar />
-        <SupportChatMode/>
-        <SearchMode />
-        <HeaderHero/>
-        <main>
-            <PlaylistPost
-                playlist={playlist}
-                onSongClick={handleSongClick}
-                isPlaying={isPlaying}
-                isLiked={isLiked}
-                onLikeClick={handleLikeClick}
-                currentSongIndex={currentSongIndex}
-            />
-            <RelatedMusic relatedMusics={relatedMusics} />
-            <MusicPlayer
-                currentSong={playlist.songs[currentSongIndex]}
-                isPlaying={isPlaying}
-                onPlayPauseClick={handlePlayPauseClick}
-                onLikeClick={handleLikeClick}
-                isLiked={isLiked}
-            />
-            <FullPlayer
-                currentSong={playlist.songs[currentSongIndex]}
-                onPlayPauseClick={handlePlayPauseClick}
-                isPlaying={isPlaying}
-                onNextSong={handleNextSong}
-                onPrevSong={handlePrevSong}
-            />
-            <Download currentSong={playlist.songs[currentSongIndex]} />
-        </main>
-        <Footer/>
-        <Backtotop/>
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!song) {
+    return <div>Song not found</div>;
+  }
+
+  return (
+    <div className="song-page">
+      <div className="song-header">
+        <Link to="/" className="back-button">
+          <span className="far fa-angle-left" title="Back" aria-label="Back"></span>
+        </Link>
+        <p className="now-playing">Now Playing</p>
+        <span className="song-options far fa-ellipsis-h"></span>
+      </div>
+
+      <div className="song-content">
+        <img src={song.imageUrl} alt={song.title} className="song-image" />
+
+        <div className="song-info">
+          <h2 className="song-title">{song.title}</h2>
+          <p className="song-artist">
+            <Link to={`/artist/${song.artist.id}`}>{song.artist}</Link>
+          </p>
+        </div>
+
+        <div className="player-controls">
+          <button className="control-button">
+            <span className="far fa-random"></span>
+          </button>
+          <button className="control-button">
+            <span className="far fa-step-backward"></span>
+          </button>
+          <button className="control-button play-pause" onClick={handlePlayPause}>
+            <span className={`far ${isPlaying ? 'fa-pause-circle' : 'fa-play-circle'}`}></span>
+          </button>
+          <button className="control-button">
+            <span className="far fa-step-forward"></span>
+          </button>
+          <button className="control-button">
+            <span className="far fa-refresh"></span>
+          </button>
+        </div>
+
+        <div className="song-actions">
+          <button className="control-button">
+            <span className="far fa-heart"></span>
+          </button>
+        </div>
+      </div>
+
+      {/* Audio element for playing music */}
+      <audio
+        ref={audioRef}
+        src={song.musicUrl}
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={handleLoadedMetadata}
+      />
+      <div className="current-time">{formatTime(currentTime)}</div>
     </div>
-    );
-    };
+  );
+};
 
-export default Songs;
-    
+export default Song;

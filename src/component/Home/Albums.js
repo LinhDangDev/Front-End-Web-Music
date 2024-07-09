@@ -1,48 +1,121 @@
-import React from "react";
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import PlaylistPost from './PlayListPost';
+import RelatedMusic from './RelatedMusic';
+import MusicPlayer from './MusicPlayer';
+import Download from './Download';
+import Loader from './Loader';
+import NavBar from './NavBar';
+import SupportChatMode from './SupportChatMode';
+import SearchMode from './SearchMode';
+import HeaderHero from './HeaderHero';
+import Footer from './Footer';
+import Backtotop from './Backtotop';
 
-const albumsData = [
-    {
-        id: 1,
-        cover: 'images/covers/Acceleration-Amadea-Music-Productions-400x400.jpeg',
-        title: 'Acceleration',
-        artist: 'Amadea Music Productions',
-        artistId: 1, // Giả sử artistId = 1 cho Amadea Music Productions
-    },
-    // ... (Thêm dữ liệu cho các album còn lại)
-];
+const Album = () => {
+    const { songId } = useParams();
+    const [songData, setSongData] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
-const Albums = ({ artistId }) => {
-    // Lọc albums theo artistId
-    const filteredAlbums = artistId ? albumsData.filter(album => album.artistId === artistId) : albumsData;
+    useEffect(() => {
+        const fetchSongData = async () => {
+        setIsLoading(true);
+        try {
+            const response = await fetch(`/api/songs/${songId}`); 
+            if (!response.ok) {
+            throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            setSongData(data); 
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        } finally {
+            setIsLoading(false);
+        }
+        };
+
+        fetchSongData();
+    }, [songId]);
+
+    const [currentSongIndex, setCurrentSongIndex] = useState(0);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
+    const [audio] = useState(new Audio());
+
+    const handleSongClick = (index) => {
+        setCurrentSongIndex(index);
+        setIsPlaying(true);
+        audio.src = songData.playlist.songs[index].src; 
+        audio.play();
+    };
+
+    const handlePlayPauseClick = () => {
+        if (isPlaying) {
+        audio.pause();
+        } else {
+        audio.play();
+        }
+        setIsPlaying(!isPlaying);
+    };
+
+    const handleLikeClick = () => {
+        setIsLiked(!isLiked);
+    };
+
+    const handleNextSong = () => {
+        const nextIndex = (currentSongIndex + 1) % songData.playlist.songs.length; 
+        handleSongClick(nextIndex);
+    };
+
+    const handlePrevSong = () => {
+        const prevIndex =
+        (currentSongIndex - 1 + songData.playlist.songs.length) % songData.playlist.songs.length; 
+        handleSongClick(prevIndex);
+    };
+
+    audio.onended = () => {
+        handleNextSong();
+    };
+
+    if (isLoading) {
+        return <Loader />;
+    }
+
+    if (!songData) {
+        return <div>Không tìm thấy bài hát.</div>;
+    }
 
     return (
-        <section className="section-playlist-post">
-            <div className="section-playlist-post-header">
-                <h2>Albums</h2>
-                <p>Hans Zimmer • 2008-2023 • <span id="numAlbums">{filteredAlbums.length}</span> Songs</p>
-            </div>
-            <div className="section-playlist-post-body">
-                <div className="card-grid" id="cardGridLen">
-                    {filteredAlbums.map((album) => (
-                        <div key={album.id} className="card-simple">
-                            <Link to={`/song/${album.id}`}> 
-                                <figure>
-                                    <img src={album.cover} alt={album.title} />
-                                </figure>
-                                <h3>{album.title}</h3>
-                            </Link>
-                            <p>
-                                <Link to={`/artist/${album.artistId}`}>
-                                    {album.artist}
-                                </Link>
-                            </p>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </section>
+        <div>
+        <Loader />
+        <NavBar />
+        <SupportChatMode />
+        <SearchMode />
+        <HeaderHero />
+        <main>
+            <PlaylistPost
+            playlist={songData.playlist} 
+            onSongClick={handleSongClick}
+            isPlaying={isPlaying}
+            isLiked={isLiked}
+            onLikeClick={handleLikeClick}
+            currentSongIndex={currentSongIndex}
+            />
+            <RelatedMusic relatedMusics={songData.relatedMusics} /> 
+            <MusicPlayer
+            currentSong={songData.playlist.songs[currentSongIndex]} 
+            isPlaying={isPlaying}
+            onPlayPauseClick={handlePlayPauseClick}
+            onLikeClick={handleLikeClick}
+            isLiked={isLiked}
+            />
+
+            <Download currentSong={songData.playlist.songs[currentSongIndex]} /> 
+        </main>
+        <Footer />
+        <Backtotop />
+        </div>
     );
 };
 
-export default Albums;
+export default Album;

@@ -16,7 +16,7 @@ const CategoryHeader = ({ genre }) => {
         <header className="hero hero-page">
             <div>
                 <figure>
-                    <Link to={`/artist/${genre.id}`}> {/* Sử dụng Link để điều hướng */}
+                    <Link to={`/genres/${genre.id}`}> {/* Sử dụng Link để điều hướng */}
                         <img src={genre.avatar} alt={genre.name} />
                     </Link>
                 </figure>

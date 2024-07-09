@@ -2,11 +2,11 @@
 
 
 // ## LOADER
-window.addEventListener('load', () => {
-    setTimeout( () => {
-        document.querySelector(".loader-warpper").classList.toggle("loader-warpper-hide");
-    }, 200);
-});
+// window.addEventListener('load', () => {
+//     setTimeout( () => {
+//         document.querySelector(".loader-warpper").classList.toggle("loader-warpper-hide");
+//     }, 200);
+// });
 
 
 // ## LIKE MUSIC HEADER
