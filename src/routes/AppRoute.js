@@ -32,7 +32,10 @@ const AppRoutes = () => {
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/verify-otp" element={<VerifyOtp />} />
                 <Route path="/change-password" element={<ChangePassword />} />
+                <Route path="/artist/:artistId/songs" element={<Artist />} />
 
+
+                
                 {/* <Route path="/admin" element={<AdminLayout />} />
                 <Route path="create-user" element={<CreateUser />} />
                 <Route path="update-user" element={<UpdateUser />} />

@@ -16,6 +16,20 @@ class ArtistService {
                 console.error('Get all artists failed: ' + err);
             });
     }
+    getSongsByArtist(artistId) {
+        return fetch(`${ARTIST_REST_API_URL}/${artistId}/songs`, {
+            method: 'GET',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            },
+        })
+            .then((res) => res.json())
+            .catch((err) => {
+            console.error('Get songs by artist failed:', err);
+            });
+        }
     getCustomInformation() {
         const url = `${ARTIST_REST_API_URL}/custom-info`; 
 

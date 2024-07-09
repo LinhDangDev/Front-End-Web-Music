@@ -31,7 +31,7 @@ const PopularArtists = () => {
 
       <div className="card-grid-slider">
         {artistData.map((artist) => (
-          <Link to={`/artist/${artist.id}`} key={artist.id}> 
+          <Link to={`/artist/${artist.id}/songs`} key={artist.id}> 
             <div className="card-artists-vertical">
               <figure>
                 <img src={artist.imageUrl} alt={artist.name} /> {/* Use artist.imageUrl */}
@@ -46,3 +46,4 @@ const PopularArtists = () => {
 };
 
 export default PopularArtists;
+

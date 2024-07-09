@@ -1,74 +1,102 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import Albums from './Albums'; // Giả sử bạn có component hiển thị danh sách album
+import ArtistService from '../../services/ArtistService';
+import Footer from './Footer';
 import Loader from './Loader';
 import NavBar from './NavBar';
-import SupportChatMode from './SupportChatMode';
 import SearchMode from './SearchMode';
-import HeaderHero from './HeaderHero';
-import Footer from './Footer';
-import Backtotop from './Backtotop';
+import SupportChatMode from './SupportChatMode';
 
 const Artist = () => {
-    const { artistId } = useParams(); 
-    const [artistData, setArtistData] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const { artistId } = useParams();
+    const [artist, setArtist] = useState(null);
+    const [songs, setSongs] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
     const fetchArtistData = async () => {
-        setIsLoading(true);
         try {
-        const response = await fetch(`/api/artists/${artistId}`); 
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+        setLoading(true);
+
+        // Lấy thông tin nghệ sĩ (Bạn cần sửa lại API để lấy thông tin artist)
+        const artistResponse = await ArtistService.getArtist(artistId);
+        if (artistResponse.code === 1000) {
+            setArtist(artistResponse.result);
+        } else {
+            setError('Failed to fetch artist information.');
         }
-        const data = await response.json();
-        setArtistData(data);
+
+        // Lấy danh sách bài hát của nghệ sĩ
+        const songsResponse = await ArtistService.getSongsByArtist(artistId);
+        if (songsResponse.code === 1000) {
+            setSongs(songsResponse.result);
+        } else {
+            setError('Failed to fetch songs for this artist.');
+        }
+
         } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching artist data:', error);
+        setError('An error occurred while fetching artist data.');
         } finally {
-        setIsLoading(false);
+        setLoading(false);
         }
     };
 
     fetchArtistData();
     }, [artistId]);
 
-    if (isLoading) {
-    return <Loader />;
+    if (loading) {
+    return <Loader loading={loading} />;
     }
 
-    if (!artistData) {
-    return <div>Không tìm thấy nghệ sĩ.</div>;
+    if (error) {
+    return <div>Error: {error}</div>;
     }
 
     return (
     <div>
-        <Loader />
         <NavBar />
         <SupportChatMode />
         <SearchMode />
-        <HeaderHero />
-        <main className="user-page"> 
-        <header className="hero hero-page">
-            <div>
-            <figure>
-                <img src={artistData.imageUrl} alt={artistData.name} />
-            </figure>
-            <div>
-                <h1>{artistData.name}</h1> 
-                <div>
-                <button type="button" className="btn-post-default">
-                    Theo dõi
-                </button>
+
+        <main className="user-page">
+        {/* Hiển thị thông tin nghệ sĩ */}
+        {artist && ( 
+          <div className="artist-header">
+            <img src={artist.imageUrl} alt={artist.artistName} className="artist-avatar" /> {/* Sử dụng artist.avatar */}
+            <div className="artist-info">
+              <h1 className="artist-name">{artist.artistName}</h1>
+            </div>
+          </div>
+        )}
+
+        <section className="section-playlist-post">
+            <div className="section-playlist-post-header">
+            <h2>Songs</h2>
+            <p>{artist ? artist.artistName : ''} • <span>{songs.length}</span> Songs</p>
+            </div>
+            <div className="section-playlist-post-body">
+            <div className="card-grid">
+                {songs.map((song) => (
+                <div className="card-simple" key={song.songId}>
+                    <Link to={`/songs/${song.songId}/play`}>
+                    <figure>
+                        <img src={song.coverImage} alt={song.songTitle} />
+                    </figure>
+                    <h3>{song.songTitle}</h3>
+                    </Link>
+                    <p>
+                    Likes: {song.likes}, Downloads: {song.downloads}
+                    </p> 
                 </div>
+                ))}
             </div>
             </div>
-        </header>
-        <Albums artistId={parseInt(artistId)} /> 
+        </section>
         </main>
+
         <Footer />
-        <Backtotop />
     </div>
     );
 };
