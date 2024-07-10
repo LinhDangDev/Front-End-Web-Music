@@ -17,39 +17,40 @@ const SupportChatMode = () => {
     event.preventDefault();
     if (userInput.trim() !== '') {
       setMessages([...messages, { role: 'user', content: userInput }]);
+      setUserInput('');
 
       try {
-        let responseMessage = '';
-
-        if (userInput.toLowerCase().includes('nhóm tác giả')) {
-          responseMessage = 'Tác giả trang web là Dung, Đạt, Linh, Thạch.';
-        } else {
-          const response = await fetch(
-            'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=YOUR_API_KEY',
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                contents: [{ parts: [{ text: userInput }] }],
-              }),
-            }
-          );
-
-          const data = await response.json();
-          if (data.candidates && data.candidates.length > 0) {
-            responseMessage = data.candidates[0].content.parts[0].text;
-          } else {
-            responseMessage = "I'm sorry, I didn't understand that.";
+        const response = await fetch(
+          'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=AIzaSyAFZmRWzJhaMFjAsoXFLUswKw8B7OOcFIM',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: userInput }] }],
+            }),
           }
-        }
+        );
 
-        setMessages([
-          ...messages,
-          { role: 'assistant', content: responseMessage },
-        ]);
-        setUserInput(''); // Clear user input after sending
+        const data = await response.json();
+        if (data.candidates && data.candidates.length > 0) {
+          setMessages([
+            ...messages,
+            {
+              role: 'assistant',
+              content: data.candidates[0].content.parts[0].text,
+            },
+          ]);
+        } else {
+          setMessages([
+            ...messages,
+            {
+              role: 'assistant',
+              content: "I'm sorry, I didn't understand that.",
+            },
+          ]);
+        }
       } catch (error) {
         console.error('Error fetching response:', error);
         setMessages([
@@ -68,6 +69,7 @@ const SupportChatMode = () => {
     setUserInput(event.target.value);
   };
 
+  // Save messages to localStorage whenever messages array changes
   useEffect(() => {
     localStorage.setItem('chatMessages', JSON.stringify(messages));
   }, [messages]);
@@ -95,22 +97,16 @@ const SupportChatMode = () => {
 
         <div className="support-chat-mode-body">
           {messages.map((message, index) => (
-            <div key={index} className={`section-message-${message.role}`}>
+            <div
+              key={index}
+              className={`section-message-${
+                message.role === 'assistant' ? 'user' : message.role
+              }`}
+            >
               {message.role === 'user' && (
-                <div className="user-message">
-                  <img src="images/avatar/avatar-1.png" alt="" />
-                  <p>{message.content}</p>
-                </div>
+                <img src="images/avatar/avatar-1.png" alt="" />
               )}
-              {message.role === 'assistant' && (
-                <div className="assistant-message">
-                  <p>{message.content}</p> 
-                  <img
-                    src="images/logo/svg/Audiospark_Logo_Icon.svg"
-                    alt=""
-                  />
-                </div>
-              )}
+              <p>{message.content}</p>
             </div>
           ))}
           <div ref={messagesEndRef} />
