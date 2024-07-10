@@ -10,6 +10,9 @@ import ChangePassword from "../component/Authentication/ChangePassword"
 import Album from "../component/Home/Albums";
 import Artist from "../component/Home/Artist";
 import Song from "../component/Home/Song";
+import AllCategory from '../component/Home/CategoryList';
+import Category from '../component/Home/Category';
+import CategoryPageSong from '../component/Home/CategoryPageSong';
 
 const AppRoutes = () => {
     return (
@@ -18,14 +21,20 @@ const AppRoutes = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/authenticate" element={<Authenticate />} />
                 <Route path="/" element={<Home />} />
-                <Route path="/album/*" element={<Album />} />
-                <Route path="/artist/*" element={<Artist />} />
-                <Route path="/song/*" element={<Song />} />
-
+                <Route path="/album" element={<Album />} />
+                <Route path="/artist" element={<Artist />} />
+                <Route path="/song" element={<Song />} />
+                <Route path="/all-categories" element={<AllCategory />} />
+                <Route path="/genres" element={<Category />} /> {/* Route cho trang Category */}
+                <Route path="/genres/:genreId/songs" element={<CategoryPageSong />} />
+                <Route path="/songs/:id/play" element={<Song />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/verify-otp" element={<VerifyOtp />} />
                 <Route path="/change-password" element={<ChangePassword />} />
+                <Route path="/artist/:artistId/songs" element={<Artist />} />
+
+
 
                 {/* <Route path="/admin" element={<AdminLayout />} />
                 <Route path="create-user" element={<CreateUser />} />

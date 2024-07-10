@@ -1,139 +1,157 @@
-import React from 'react';
-
-import PlaylistPost from './PlayListPost';
-import RelatedMusic from './RelatedMusic';
-import MusicPlayer from './MusicPlayer';
-import FullPlayer from './FullPlayer';
-import Download from './Download';
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import SongService from '../../services/SongService';
 import Loader from './Loader';
-import NavBar from './NavBar';
-import SupportChatMode from './SupportChatMode';
-import SearchMode from './SearchMode';
-import HeaderHero from './HeaderHero';
-import Footer from './Footer';
-import Backtotop from './Backtotop';
+import { formatTime } from '../../utils/timeUtils';
+import './Song.css';
 
-class Songs extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            getSong: null,
-            playlist: {
-                title: 'Playlist',
-                artist: 'Ultima Trailer Music',
-                year: 2021,
-                songs: [
-                    {
-                        id: 1,
-                        name: 'Helix Angle',
-                        duration: '1:39',
-                        src: 'musics/1.mp3',
-                    },
-                    {
-                        id: 2,
-                        name: 'Enforcement',
-                        duration: '1:30',
-                        src: 'musics/1.mp3',
-                    },
-                    // ... Other songs
-                ],
-            },
-            relatedMusics: null,
-            currentSongIndex: 0,
-            isPlaying: false,
-            isLiked: false,
-            audio: new Audio(),
-        };
-    }
+const Song = () => {
+  const { id } = useParams();
+  const [song, setSong] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [isLooping, setIsLooping] = useState(false);
+  const audioRef = useRef(null);
 
-    componentDidMount() {
-        const { audio } = this.state;
-        audio.onended = this.handleNextSong;
-        if (this.props.location.state) {
-            const { song, relatedMusic } = this.props.location.state;
-            this.setState({
-                getSong: song,
-                relatedMusics: relatedMusic // Assuming relatedMusic is also passed
-            });
-            console.log("hello");
-        }
-        console.log(this.state.getSong)
-    }
-
-    handleSongClick = () => {
-        const { audio } = this.state;
-        this.setState({ isPlaying: true });
-        audio.src = this.state.song.filePath;
-        audio.play();
-    };
-
-    handlePlayPauseClick = () => {
-        const { audio, isPlaying } = this.state;
-        if (isPlaying) {
-            audio.pause();
+  useEffect(() => {
+    const fetchSong = async () => {
+      try {
+        setIsLoading(true);
+        const response = await SongService.getSongForPlay(id);
+        if (response.code === 1000) {
+          setSong(response.result);
         } else {
-            audio.play();
+          setError('Failed to fetch song details.');
         }
-        this.setState({ isPlaying: !isPlaying });
+      } catch (error) {
+        console.error('Error fetching song:', error);
+        setError('An error occurred while fetching song details.');
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    handleLikeClick = () => {
-        this.setState((prevState) => ({ isLiked: !prevState.isLiked }));
-    };
+    fetchSong();
+  }, [id]);
 
-    handleNextSong = () => {
-        const { currentSongIndex, playlist } = this.state;
-        const nextIndex = (currentSongIndex + 1) % playlist.songs.length;
-        this.handleSongClick(nextIndex);
-    };
-
-    handlePrevSong = () => {
-        const { currentSongIndex, playlist } = this.state;
-        const prevIndex =
-            (currentSongIndex - 1 + playlist.songs.length) % playlist.songs.length;
-        this.handleSongClick(prevIndex);
-    };
-
-    render() {
-        const { playlist, relatedMusics, currentSongIndex, isPlaying, isLiked } = this.state;
-        return (
-            <div>
-                <Loader />
-                <NavBar />
-                <SupportChatMode />
-                <SearchMode />
-                <HeaderHero />
-                <main>
-                    <PlaylistPost
-                        playlist={playlist}
-                        onSongClick={this.handleSongClick}
-                        isPlaying={isPlaying}
-                        isLiked={isLiked}
-                        onLikeClick={this.handleLikeClick}
-                        currentSongIndex={currentSongIndex}
-                    />
-                    <RelatedMusic relatedMusics={relatedMusics} />
-                    <MusicPlayer
-                        currentSong={playlist.songs[currentSongIndex]}
-                        isPlaying={isPlaying}
-                        onPlayPauseClick={this.handlePlayPauseClick}
-                        onLikeClick={this.handleLikeClick}
-                        isLiked={isLiked}
-                    />
-                    <FullPlayer
-                        currentSong={playlist.songs[currentSongIndex]}
-                        onPlayPauseClick={this.handlePlayPauseClick}
-                        isPlaying={isPlaying}
-                        onNextSong={this.handleNextSong}
-                        onPrevSong={this.handlePrevSong}
-                    />
-                    <Download currentSong={playlist.songs[currentSongIndex]} />
-                </main>
-                <Footer />
-                <Backtotop />
-            </div>
-        );
+  useEffect(() => {
+    if (!isLoading && song && audioRef.current) {
+      audioRef.current.load();
     }
-}
+  }, [isLoading, song]);
 
-export default Songs;
+  const handlePlayPause = () => {
+    const audio = audioRef.current;
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  const handleTimeUpdate = () => {
+    setCurrentTime(audioRef.current.currentTime);
+  };
+
+  const handleLoadedMetadata = () => {
+    setDuration(audioRef.current.duration);
+    setCurrentTime(0);
+  };
+
+  const handleProgressChange = (e) => {
+    const audio = audioRef.current;
+    audio.currentTime = (e.target.value / 100) * duration;
+    setCurrentTime(audio.currentTime);
+  };
+
+  const handleLoopClick = () => {
+    setIsLooping(!isLooping);
+    audioRef.current.loop = !isLooping;
+  };
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!song) {
+    return <div>Song not found</div>;
+  }
+
+  return (
+    <div className="song-page">
+      <div className="song-header">
+        <Link to="/" className="back-button">
+          <span className="far fa-angle-left" title="Back" aria-label="Back"></span>
+        </Link>
+        <p className="now-playing">Now Playing</p>
+        <span className="song-options far fa-ellipsis-h"></span>
+      </div>
+
+      <div className="song-content">
+        <img src={song.imageUrl} alt={song.title} className="song-image" />
+
+        <div className="song-info">
+          <h2 className="song-title">{song.title}</h2>
+          <p className="song-artist">
+            <Link to={`/artist/${song.artist.id}`}>{song.artist}</Link>
+          </p>
+        </div>
+
+        <div className="song-progress">
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={(currentTime / duration) * 100 || 0}
+            onChange={handleProgressChange}
+          />
+          <div className="time-display">
+            <span>{formatTime(currentTime)}</span> / <span>{formatTime(duration)}</span>
+          </div>
+        </div>
+
+        <div className="player-controls">
+          <button className="control-button">
+            <span className="far fa-random"></span>
+          </button>
+          <button className="control-button">
+            <span className="far fa-step-backward"></span>
+          </button>
+          <button className="control-button play-pause" onClick={handlePlayPause}>
+            <span className={`far ${isPlaying ? 'fa-pause-circle' : 'fa-play-circle'}`}></span>
+          </button>
+          <button className="control-button">
+            <span className="far fa-step-forward"></span>
+          </button>
+          <button className="control-button" onClick={handleLoopClick}>
+            <span className={`far fa-refresh ${isLooping ? 'active' : ''}`}></span>
+          </button>
+        </div>
+
+        <div className="song-actions">
+          <button className="control-button">
+            <span className="far fa-heart"></span>
+          </button>
+        </div>
+      </div>
+
+      {/* Audio element for playing music */}
+      <audio
+        ref={audioRef}
+        src={song.musicUrl}
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={handleLoadedMetadata}
+      />
+    </div>
+  );
+};
+
+export default Song;

@@ -1,128 +1,104 @@
-import React, { useState } from 'react';
-import PlaylistPost from './PlayListPost'; // Sửa đường dẫn import
-import RelatedMusic from './RelatedMusic'; // Sửa đường dẫn import
-import MusicPlayer from './MusicPlayer'; // Sửa đường dẫn import
-import FullPlayer from './FullPlayer'; // Sửa đường dẫn import
-import Download from './Download'; // Sửa đường dẫn import
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import ArtistService from '../../services/ArtistService';
+import Footer from './Footer';
 import Loader from './Loader';
 import NavBar from './NavBar';
-import SupportChatMode from './SupportChatMode';
 import SearchMode from './SearchMode';
-import HeaderHero from './HeaderHero';
-import Footer from './Footer';
-import Backtotop from './Backtotop';
+import SupportChatMode from './SupportChatMode';
 
-const Artists = () => {
-    const playlist = {
-        title: 'Playlist',
-        artist: 'Ultima Trailer Music',
-        year: 2021,
-        songs: [
-            {
-                id: 1,
-                name: 'Helix Angle',
-                duration: '1:39',
-                src: 'musics/1.mp3',
-            },
-            {
-                id: 2,
-                name: 'Enforcement',
-                duration: '1:30',
-                src: 'musics/1.mp3',
-            },
-            // ... Các bài hát khác
-        ],
-    };
+const Artist = () => {
+    const { artistId } = useParams();
+    const [artist, setArtist] = useState(null);
+    const [songs, setSongs] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const relatedMusics = [
-        [
-            {
-                title: 'Undefeated',
-                artist: 'Amadea Music Productions',
-                cover: 'images/covers/Undefeated-Amadea-Music-Productions-400x400.jpeg',
-            },
-            // ... Các bài hát khác trong nhóm 1
-        ],
-        // ... Các nhóm nhạc khác
-    ];
+    useEffect(() => {
+        const fetchArtistData = async () => {
+            try {
+                setLoading(true);
 
-    const [currentSongIndex, setCurrentSongIndex] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [isLiked, setIsLiked] = useState(false);
-    const [audio] = useState(new Audio());
+                // Lấy thông tin nghệ sĩ (Bạn cần sửa lại API để lấy thông tin artist)
+                const artistResponse = await ArtistService.getArtist(artistId);
+                if (artistResponse.code === 1000) {
+                    setArtist(artistResponse.result);
+                } else {
+                    setError('Failed to fetch artist information.');
+                }
 
-    const handleSongClick = (index) => {
-        setCurrentSongIndex(index);
-        setIsPlaying(true);
-        audio.src = playlist.songs[index].src;
-        audio.play();
-    };
+                // Lấy danh sách bài hát của nghệ sĩ
+                const songsResponse = await ArtistService.getSongsByArtist(artistId);
+                if (songsResponse.code === 1000) {
+                    setSongs(songsResponse.result);
+                } else {
+                    setError('Failed to fetch songs for this artist.');
+                }
 
-    const handlePlayPauseClick = () => {
-        if (isPlaying) {
-            audio.pause();
-        } else {
-            audio.play();
-        }
-        setIsPlaying(!isPlaying);
-    };
+            } catch (error) {
+                console.error('Error fetching artist data:', error);
+                setError('An error occurred while fetching artist data.');
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const handleLikeClick = () => {
-        setIsLiked(!isLiked);
-    };
+        fetchArtistData();
+    }, [artistId]);
 
-    const handleNextSong = () => {
-        const nextIndex = (currentSongIndex + 1) % playlist.songs.length;
-        handleSongClick(nextIndex);
-    };
+    if (loading) {
+        return <Loader loading={loading} />;
+    }
 
-    const handlePrevSong = () => {
-        const prevIndex =
-            (currentSongIndex - 1 + playlist.songs.length) % playlist.songs.length;
-        handleSongClick(prevIndex);
-    };
-
-    audio.onended = () => {
-        handleNextSong();
-    };
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
 
     return (
         <div>
-            <Loader />
             <NavBar />
             <SupportChatMode />
             <SearchMode />
-            <HeaderHero />
-            <main>
-                <PlaylistPost
-                    playlist={playlist}
-                    onSongClick={handleSongClick}
-                    isPlaying={isPlaying}
-                    isLiked={isLiked}
-                    onLikeClick={handleLikeClick}
-                    currentSongIndex={currentSongIndex}
-                />
-                <RelatedMusic relatedMusics={relatedMusics} />
-                <MusicPlayer
-                    currentSong={playlist.songs[currentSongIndex]}
-                    isPlaying={isPlaying}
-                    onPlayPauseClick={handlePlayPauseClick}
-                    onLikeClick={handleLikeClick}
-                    isLiked={isLiked}
-                />
-                <FullPlayer
-                    currentSong={playlist.songs[currentSongIndex]}
-                    onPlayPauseClick={handlePlayPauseClick}
-                    isPlaying={isPlaying}
-                    onNextSong={handleNextSong}
-                    onPrevSong={handlePrevSong}
-                />
-                <Download currentSong={playlist.songs[currentSongIndex]} />
+
+            <main className="user-page">
+                {/* Hiển thị thông tin nghệ sĩ */}
+                {artist && (
+                    <div className="artist-header">
+                        <img src={artist.imageUrl} alt={artist.artistName} className="artist-avatar" /> {/* Sử dụng artist.avatar */}
+                        <div className="artist-info">
+                            <h1 className="artist-name">{artist.artistName}</h1>
+                        </div>
+                    </div>
+                )}
+
+                <section className="section-playlist-post">
+                    <div className="section-playlist-post-header">
+                        <h2>Songs</h2>
+                        <p>{artist ? artist.artistName : ''} • <span>{songs.length}</span> Songs</p>
+                    </div>
+                    <div className="section-playlist-post-body">
+                        <div className="card-grid">
+                            {songs.map((song) => (
+                                <div className="card-simple" key={song.songId}>
+                                    <Link to={`/songs/${song.songId}/play`}>
+                                        <figure>
+                                            <img src={song.coverImage} alt={song.songTitle} />
+                                        </figure>
+                                        <h3>{song.songTitle}</h3>
+                                    </Link>
+                                    <p>
+                                        Likes: {song.likes}, Downloads: {song.downloads}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
             </main>
+
             <Footer />
-            <Backtotop />
         </div>
     );
 };
 
-export default Artists;
+export default Artist;

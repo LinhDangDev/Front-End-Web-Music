@@ -2,67 +2,11 @@
 
 
 // ## LOADER
-window.addEventListener('load', () => {
-    setTimeout(() => {
-        document.querySelector(".loader-warpper").classList.toggle("loader-warpper-hide");
-    }, 2000);
-});
-
-
-// ## NAVBAR MOBILE
-function navbarMobileToggle() {
-    document.getElementById("navbarMobileToggle").classList.toggle("navbarMobileToggle");
-}
-
-// SWITCH MODE
-function switchMode() {
-    document.body.classList.toggle("switchMode");
-    document.getElementById("switchModeBtnDark").classList.toggle("switchModeBtnDarkToggle");
-    document.getElementById("switchModeBtnLight").classList.toggle("switchModeBtnLightToggle");
-
-    document.getElementById("logoFooterModeLight").classList.toggle("logoFooterModeLightToggle");
-    document.getElementById("logoFooterModeDark").classList.toggle("logoFooterModeDarkToggle");
-}
-
-// SEARCH MODE
-function searchMode() {
-    document.getElementById("searchMode").classList.toggle("searchMode");
-    document.getElementById("overlaySearchMode").classList.toggle("overlaySearchMode");
-}
-
-// AVATAR DROPDOWN
-function avatarDropdown() {
-    document.getElementById("avatarDropdown").classList.toggle("avatarDropdown");
-}
-
-// SUPPORT & CHAT MODE
-function supportChatMode() {
-    document.getElementById("supportChatMode").classList.toggle("supportChatMode");
-}
-
-
-// ## BACK TOP
-const backTop = document.getElementById('backTopId'); // Replace 'backTopId' with your actual element ID
-const navbarFixed = document.getElementById('navbarFixedId'); // Replace 'navbarFixedId' with your actual element ID
-
-// Adding event listener for scroll event on window
-window.addEventListener("scroll", () => {
-    if (backTop) {
-        if (window.scrollY > 200) {
-            backTop.classList.add("back-top-active");
-        } else {
-            backTop.classList.remove("back-top-active");
-        }
-    }
-
-    if (navbarFixed) {
-        if (window.scrollY > 50) {
-            navbarFixed.classList.add("nav-fixed-active");
-        } else {
-            navbarFixed.classList.remove("nav-fixed-active");
-        }
-    }
-});
+// window.addEventListener('load', () => {
+//     setTimeout( () => {
+//         document.querySelector(".loader-warpper").classList.toggle("loader-warpper-hide");
+//     }, 200);
+// });
 
 
 // ## LIKE MUSIC HEADER

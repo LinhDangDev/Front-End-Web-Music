@@ -1,44 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-const Category = () => {
-    return (
-        <section className="section-category" id="category">
-        <div>
-            <h2>Category</h2>
-            <p>
-            <Link to="#">See all</Link> 
-            </p>
-        </div>
+import GenreService from '../../services/GenreService';
 
-        <div className="card-grid-slider">
-            {categoryData.map((group, groupIndex) => (
-            <div className="card-group-grid" key={groupIndex}>
-                {group.map((category) => (
-                <Link to={`/category/${category.id}`} key={category.id}> 
-                    <div className={`card-category-vertical ${category.className}`}>
-                    <h4>{category.name}</h4>
-                    <span className="far fa-play"></span>
-                    </div>
-                </Link>
-                ))}
-            </div>
-            ))}
-        </div>
-        </section>
-    );
+const Category = () => {
+  const [categoryData, setCategoryData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await GenreService.getAll();
+        if (response.code === 1000) {
+          setCategoryData(response.result);
+        } else {
+          console.error('Failed to fetch categories:', response.message);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
     };
 
-    // Sample category data - Replace with your actual data
-    const categoryData = [
-    [
-        { id: 1, name: 'Soundtrack', className: 'card-category-vertical-soft-1' },
-        { id: 2, name: 'Epic', className: 'card-category-vertical-soft-2' },
-    ],
-    [
-        { id: 3, name: 'Orchestral', className: 'card-category-vertical-soft-3' },
-        { id: 4, name: 'Rock', className: 'card-category-vertical-soft-4' },
-    ],
-    // Add more category groups here
-    ];
+    fetchData();
+  }, []);
 
-    export default Category;
+  return (
+    <section className="section-category" id="category">
+      <div>
+        <h2>Category</h2>
+        <p>
+          <Link to="/all-categories">See all</Link>
+        </p>
+      </div>
+
+      <div className="card-grid-slider">
+        {categoryData.map((category) => (
+          <div className="card-group-grid" key={category.genreId}>
+            <Link to={`/genres/${category.genreId}/songs`}>
+              <div
+                className={`card-category-vertical card-category-vertical-soft-${category.genreId}`}
+              >
+                <h4>{category.genreName}</h4>
+                <span className="far fa-play"></span>
+              </div>
+            </Link>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+export default Category;
