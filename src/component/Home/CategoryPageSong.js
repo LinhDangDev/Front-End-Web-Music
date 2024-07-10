@@ -57,11 +57,11 @@ const CategoryPageSong = () => {
   };
   
   return (
-    <div >
+    <div className='app-container' >
       <NavBar />
       <SupportChatMode />
       <SearchMode />
-      
+      <>
         <main class="user-page">
           <section className="section-playlist-post">
             {/* <div className="container"> */}
@@ -85,12 +85,12 @@ const CategoryPageSong = () => {
                         </Link>
                       </div>
                     ))}
-                  </div>
+                </div>
               {/* </div> */}
             </div>
           </section>
         </main>
-
+      </>
       <Footer />
     </div>
   );

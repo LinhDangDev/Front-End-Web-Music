@@ -77,7 +77,8 @@ const AllCategory = () => {
                                 // Wrap each pair of categories in a row div
                                 index % 2 === 0 ? (
                                     <div className="card-group-grid" key={index}>
-                                        <Link to={`/genres/${category.genreId}/songs`}>
+                                        {/* Sử dụng Link để điều hướng */}
+                                        <Link to={`/genres/${category.id}/songs`}>
                                             <div className={`card-category-vertical ${category.className}`}>
                                                 <div className='card-body'>
                                                     <h4>{category.name}</h4>
@@ -87,7 +88,7 @@ const AllCategory = () => {
                                             </div>
                                         </Link>
                                         {categoryData[index + 1] && ( 
-                                            <Link to={`/genres/${categoryData[index + 1].id}/s`} key={categoryData[index + 1].id}>
+                                            <Link to={`/genres/${categoryData[index + 1].id}/songs`} key={categoryData[index + 1].id}>
                                                 <div className={`card-category-vertical ${categoryData[index + 1].className}`}>
                                                     <div className='card-body'>
                                                         <h4>{categoryData[index + 1].name}</h4>
