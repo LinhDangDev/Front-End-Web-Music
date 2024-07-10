@@ -118,6 +118,11 @@ const ListGenres = () => {
                           <TableCell
                             sx={{ fontWeight: "bold", fontSize: "1.2rem" }}
                           >
+                            Genre id
+                          </TableCell>
+                          <TableCell
+                            sx={{ fontWeight: "bold", fontSize: "1.2rem" }}
+                          >
                             Genre Name
                           </TableCell>
                           <TableCell
@@ -130,6 +135,11 @@ const ListGenres = () => {
                       <TableBody>
                         {genres.map((genre) => (
                           <TableRow key={genre.genreName}>
+                            <TableCell>
+                              <Typography variant="body1">
+                                {genre.genreId}
+                              </Typography>
+                            </TableCell>
                             <TableCell>
                               <Typography variant="body1">
                                 {genre.genreName}

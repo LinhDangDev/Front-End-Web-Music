@@ -1,8 +1,6 @@
 // import logo from '%PUBLIC_URL%/logo.svg';
-import './App.css';
-import AppRoutes from './routes/AppRoute';
-
-
+import "./App.css";
+import AppRoutes from "./routes/AppRoute";
 
 function App() {
   return (

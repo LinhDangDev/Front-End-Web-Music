@@ -24,7 +24,7 @@ import {
 } from "@mui/material";
 import GenreNav from "./GenreNav";
 
-const ListGenre = () => {
+const DeleteGenre = () => {
   const [genres, setGenres] = useState([]);
   const [loading, setLoading] = useState(false);
   const [snackBarOpen, setSnackBarOpen] = useState(false);
@@ -215,14 +215,26 @@ const ListGenre = () => {
                           <TableCell>ID</TableCell>
                           <TableCell>Name</TableCell>
                           <TableCell>Description</TableCell>
+                          <TableCell>Actions</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
                         {genres.map((genre) => (
-                          <TableRow key={genre.id}>
-                            <TableCell>{genre.id}</TableCell>
+                          <TableRow key={genre.genreId}>
+                            <TableCell>{genre.genreId}</TableCell>
                             <TableCell>{genre.genreName}</TableCell>
                             <TableCell>{genre.description}</TableCell>
+                            <TableCell>
+                              <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() =>
+                                  handleDeleteOpen(genre.id, genre.genreName)
+                                }
+                              >
+                                Delete
+                              </Button>
+                            </TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
@@ -238,4 +250,4 @@ const ListGenre = () => {
   );
 };
 
-export default ListGenre;
+export default DeleteGenre;

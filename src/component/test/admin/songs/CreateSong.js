@@ -166,7 +166,7 @@ const UploadSong = () => {
                     onChange={handleGenreChange}
                   >
                     {genres.map((genre) => (
-                      <MenuItem key={genre.id} value={genre.id}>
+                      <MenuItem key={genre.genreName} value={genre.genreId}>
                         {genre.genreName}
                       </MenuItem>
                     ))}

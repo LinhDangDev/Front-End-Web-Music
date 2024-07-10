@@ -1,31 +1,31 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 
 const SupportChatMode = () => {
   const [messages, setMessages] = useState(
-    JSON.parse(localStorage.getItem('chatMessages')) || [
-      { role: 'assistant', content: 'Hello! How can I assist you today?' },
+    JSON.parse(localStorage.getItem("chatMessages")) || [
+      { role: "assistant", content: "Hello! How can I assist you today?" },
     ]
   );
-  const [userInput, setUserInput] = useState('');
+  const [userInput, setUserInput] = useState("");
   const messagesEndRef = useRef(null);
 
   const closeChatMode = () => {
-    document.getElementById('supportChatMode').style.display = 'none';
+    document.getElementById("supportChatMode").style.display = "none";
   };
 
   const sendMessage = async (event) => {
     event.preventDefault();
-    if (userInput.trim() !== '') {
-      setMessages([...messages, { role: 'user', content: userInput }]);
-      setUserInput('');
+    if (userInput.trim() !== "") {
+      setMessages([...messages, { role: "user", content: userInput }]);
+      setUserInput("");
 
       try {
         const response = await fetch(
-          'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=AIzaSyAFZmRWzJhaMFjAsoXFLUswKw8B7OOcFIM',
+          "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=AIzaSyAFZmRWzJhaMFjAsoXFLUswKw8B7OOcFIM",
           {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({
               contents: [{ parts: [{ text: userInput }] }],
@@ -38,7 +38,7 @@ const SupportChatMode = () => {
           setMessages([
             ...messages,
             {
-              role: 'assistant',
+              role: "assistant",
               content: data.candidates[0].content.parts[0].text,
             },
           ]);
@@ -46,17 +46,17 @@ const SupportChatMode = () => {
           setMessages([
             ...messages,
             {
-              role: 'assistant',
+              role: "assistant",
               content: "I'm sorry, I didn't understand that.",
             },
           ]);
         }
       } catch (error) {
-        console.error('Error fetching response:', error);
+        console.error("Error fetching response:", error);
         setMessages([
           ...messages,
           {
-            role: 'assistant',
+            role: "assistant",
             content:
               "I'm having trouble understanding you right now. Please try again later.",
           },
@@ -71,11 +71,11 @@ const SupportChatMode = () => {
 
   // Save messages to localStorage whenever messages array changes
   useEffect(() => {
-    localStorage.setItem('chatMessages', JSON.stringify(messages));
+    localStorage.setItem("chatMessages", JSON.stringify(messages));
   }, [messages]);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   return (
@@ -83,7 +83,7 @@ const SupportChatMode = () => {
       <div className="support-chat-mode">
         <div className="support-chat-mode-header">
           <h4>
-            Support{' '}
+            Support{" "}
             <img
               src="images/logo/PNG/Audiospark_Logo_Icon/Audiospark_Logo_Icon@2400.png"
               alt=""
@@ -100,10 +100,10 @@ const SupportChatMode = () => {
             <div
               key={index}
               className={`section-message-${
-                message.role === 'assistant' ? 'user' : message.role
+                message.role === "assistant" ? "user" : message.role
               }`}
             >
-              {message.role === 'user' && (
+              {message.role === "user" && (
                 <img src="images/avatar/avatar-1.png" alt="" />
               )}
               <p>{message.content}</p>

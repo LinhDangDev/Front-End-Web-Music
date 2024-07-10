@@ -1,6 +1,3 @@
-
-
-
 // ## LOADER
 // window.addEventListener('load', () => {
 //     setTimeout( () => {
@@ -8,56 +5,76 @@
 //     }, 200);
 // });
 
-
 // ## LIKE MUSIC HEADER
 function likeMusicHeader() {
-    document.getElementById("likeMusicHeader").classList.toggle("likeMusicHeaderToggle");
+  document
+    .getElementById("likeMusicHeader")
+    .classList.toggle("likeMusicHeaderToggle");
 }
 function likeMusicPlay() {
-    document.getElementById("likeMusicPlay").classList.toggle("likeMusicPlayToggle");
+  document
+    .getElementById("likeMusicPlay")
+    .classList.toggle("likeMusicPlayToggle");
 }
-
 
 // ## PLAY SOUND/MUSIC PLAYER
 var audio1 = new Audio("musics/1.mp3");
 // PLAY SOUND
 function playSound() {
-    audio1.play();
-    document.getElementById("pauseBtnPlayCard").classList.toggle("pauseBtnPlayCardToggle");
-    document.getElementById("playBtnPlayCard").classList.toggle("playBtnPlayCardToggle");
+  audio1.play();
+  document
+    .getElementById("pauseBtnPlayCard")
+    .classList.toggle("pauseBtnPlayCardToggle");
+  document
+    .getElementById("playBtnPlayCard")
+    .classList.toggle("playBtnPlayCardToggle");
 }
 // PAUSE SOUND
 function pauseSound() {
-    audio1.pause();
-    document.getElementById("pauseBtnPlayCard").classList.toggle("pauseBtnPlayCardToggle");
-    document.getElementById("playBtnPlayCard").classList.toggle("playBtnPlayCardToggle");
+  audio1.pause();
+  document
+    .getElementById("pauseBtnPlayCard")
+    .classList.toggle("pauseBtnPlayCardToggle");
+  document
+    .getElementById("playBtnPlayCard")
+    .classList.toggle("playBtnPlayCardToggle");
 }
 function likeMusicPlayer() {
-    document.getElementById("likeMusicPlayer").classList.toggle("likeMusicPlayerToggle");
+  document
+    .getElementById("likeMusicPlayer")
+    .classList.toggle("likeMusicPlayerToggle");
 }
 
 // COLLAPSE MUSIC PLAYER
 function collapseMusicPlayer() {
-    document.getElementById("sectionMusicPlayer").classList.toggle("sectionMusicPlayerToggle");
-    document.getElementById("collapseMusicPlayerBtn").classList.toggle("collapseMusicPlayerBtnToggle");
-    document.getElementById("expandMusicPlayerBtn").classList.toggle("expandMusicPlayerBtnToggle");
+  document
+    .getElementById("sectionMusicPlayer")
+    .classList.toggle("sectionMusicPlayerToggle");
+  document
+    .getElementById("collapseMusicPlayerBtn")
+    .classList.toggle("collapseMusicPlayerBtnToggle");
+  document
+    .getElementById("expandMusicPlayerBtn")
+    .classList.toggle("expandMusicPlayerBtnToggle");
 }
 
 // FULL PLAYER
 function fullPlayer() {
-    document.getElementById("fullPlayer").classList.toggle("fullPlayer");
+  document.getElementById("fullPlayer").classList.toggle("fullPlayer");
 }
 function fullPlayerHeaderDropdown() {
-    document.getElementById("fullPlayerHeaderDropdown").classList.toggle("fullPlayerHeaderDropdown");
+  document
+    .getElementById("fullPlayerHeaderDropdown")
+    .classList.toggle("fullPlayerHeaderDropdown");
 }
 
 // ## DOWNLOAD
 function download() {
-    document.getElementById("download").classList.toggle("downloadToggle");
+  document.getElementById("download").classList.toggle("downloadToggle");
 
-    setTimeout(() => {
-        window.location.href = "../musics/1.mp3";
-    }, 3000);
+  setTimeout(() => {
+    window.location.href = "../musics/1.mp3";
+  }, 3000);
 }
 
 // NUMBER ALBUMS

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import GenreService from '../../services/GenreService';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import GenreService from "../../services/GenreService";
 
 const Category = () => {
   const [categoryData, setCategoryData] = useState([]);
@@ -8,15 +8,14 @@ const Category = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        
         const response = await GenreService.getAll();
         if (response.code === 1000) {
           setCategoryData(response.result);
         } else {
-          console.error('Failed to fetch categories:', response.message);
+          console.error("Failed to fetch categories:", response.message);
         }
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.error("Error fetching categories:", error);
       }
     };
 

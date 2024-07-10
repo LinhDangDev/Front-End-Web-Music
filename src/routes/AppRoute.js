@@ -1,19 +1,19 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "../component/Home/Home";
 import Login from "../component/Authentication/Login";
 import Authenticate from "../component/Authentication/Authenticate";
 import Register from "../component/Authentication/Register";
 import ForgotPassword from "../component/Authentication/ForgotPassword";
-import VerifyOtp from '../component/Authentication/VerifyOtp';
-import ChangePassword from "../component/Authentication/ChangePassword"
+import VerifyOtp from "../component/Authentication/VerifyOtp";
+import ChangePassword from "../component/Authentication/ChangePassword";
 import Album from "../component/Home/Albums";
 import Artist from "../component/Home/Artist";
 import Song from "../component/Home/Song";
-import AllCategory from '../component/Home/CategoryList';
-import Category from '../component/Home/Category';
-import CategoryPageSong from '../component/Home/CategoryPageSong';
-import AllArtist from '../component/Home/ArtistList';
+import AllCategory from "../component/Home/CategoryList";
+import Category from "../component/Home/Category";
+import CategoryPageSong from "../component/Home/CategoryPageSong";
+import AllArtist from "../component/Home/ArtistList";
 import AdminLayout from "../component/test/admin/AdminLayout";
 import CreateUser from "../component/test/user/CreateUser";
 import UpdateUser from "../component/test/user/UpdateUser";
@@ -40,40 +40,41 @@ import UpdateGenre from "../component/test/admin/Role/Genre/UpdateGenre";
 import DeleteGenre from "../component/test/admin/Role/Genre/DeleteGenre";
 import ListGenre from "../component/test/admin/Role/Genre/ListGenre";
 const AppRoutes = () => {
-    return (
-        <Router>
-            <Routes> {/* Sử dụng Routes thay vì Route */}
-                <Route path="/login" element={<Login />} />
-                <Route path="/authenticate" element={<Authenticate />} />
-                <Route path="/" element={<Home />} />
-                <Route path="/album/:albumId" element={<Album />} />
-                {/* <Route path="/artist" element={<Artist />} /> */}
-                <Route path="/artists" element={<AllArtist />} />
-                <Route path="/artists/:artistId/songs" element={<Artist />} /> 
-                <Route path="/song" element={<Song />} />
-                <Route path="/all-categories" element={<AllCategory />} />
-                <Route path="/genres" element={<Category />} /> {/* Route cho trang Category */}
-                <Route path="/genres/:genreId/songs" element={<CategoryPageSong />} />
-                <Route path="/songs/:id/play" element={<Song />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/verify-otp" element={<VerifyOtp />} />
-                <Route path="/change-password" element={<ChangePassword />} />
-                <Route path="/artist/:artistId/songs" element={<Artist />} />
-                <Route path="/admin" element={<AdminLayout />} />
+  return (
+    <Router>
+      <Routes>
+        {" "}
+        {/* Sử dụng Routes thay vì Route */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/authenticate" element={<Authenticate />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/album/:albumId" element={<Album />} />
+        {/* <Route path="/artist" element={<Artist />} /> */}
+        <Route path="/artists" element={<AllArtist />} />
+        <Route path="/artists/:artistId/songs" element={<Artist />} />
+        <Route path="/song" element={<Song />} />
+        <Route path="/all-categories" element={<AllCategory />} />
+        <Route path="/genres" element={<Category />} />{" "}
+        {/* Route cho trang Category */}
+        <Route path="/genres/:genreId/songs" element={<CategoryPageSong />} />
+        <Route path="/songs/:id/play" element={<Song />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/verify-otp" element={<VerifyOtp />} />
+        <Route path="/change-password" element={<ChangePassword />} />
+        <Route path="/artist/:artistId/songs" element={<Artist />} />
+        <Route path="/admin" element={<AdminLayout />} />
         <Route path="/GenreNav" element={<GenreNav />} />
         <Route path="/CreateGenre" element={<CreateGenre />} />
         <Route path="/UpdateGenre" element={<UpdateGenre />} />
         <Route path="/DeleteGenre" element={<DeleteGenre />} />
         <Route path="/ListGenre" element={<ListGenre />} />
         <Route path="/SongNav" element={<SongNav />} />
-
         <Route path="/ListSong" element={<ListSong />} />
         <Route path="/CreateSong" element={<CreateSong />} />
         <Route path="/UpdateSong" element={<UpdateSong />} />
         <Route path="/DeleteSong" element={<DeleteSong />} />
         <Route path="/CategorySong" element={<CategorySong />} />
-
         <Route path="/CreateUser" element={<CreateUser />} />
         <Route path="/UpdateUser" element={<UpdateUser />} />
         <Route path="/DeleteUser" element={<DeleteUser />} />
@@ -87,9 +88,9 @@ const AppRoutes = () => {
         <Route path="/PermissionNav" element={<PermissionNav />}></Route>
         <Route path="/ListPermission" element={<ListPermission />}></Route>
         <Route path="/DeletePermission" element={<DeletePermission />}></Route>
-            </Routes>
-        </Router>
-    );
+      </Routes>
+    </Router>
+  );
 };
 
 export default AppRoutes;

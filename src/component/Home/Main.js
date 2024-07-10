@@ -4,25 +4,24 @@ import Trending from "./Trending";
 import Category from "./Category";
 import PopularArtists from "./PopularArtists";
 export default function Main() {
-    return (
-        // <!-- MAIN -->
-        <main>
-                {/* //Explore Component */}
-            <Explore />
+  return (
+    // <!-- MAIN -->
+    <main>
+      {/* //Explore Component */}
+      <Explore />
 
-            {/* <!-- #SECTION: FEATURED CREATORS --> */}
-            <FeaturedCreators />
+      {/* <!-- #SECTION: FEATURED CREATORS --> */}
+      <FeaturedCreators />
 
-            {/* <!-- #SECTION: TRENDING --> */}
-            <Trending />
+      {/* <!-- #SECTION: TRENDING --> */}
+      <Trending />
 
+      {/* <!-- #SECTION: CATEGORY --> */}
+      <Category />
 
-            {/* <!-- #SECTION: CATEGORY --> */}
-            <Category />
+      {/* <!-- POPULAR ARTISTS SLIDER --> */}
 
-            {/* <!-- POPULAR ARTISTS SLIDER --> */}
-
-            <PopularArtists />
-        </main>
-    );
+      <PopularArtists />
+    </main>
+  );
 }

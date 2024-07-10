@@ -1,14 +1,24 @@
-import React from 'react';
+import React from "react";
 // In your target JavaScript file (e.g., script.js)
-// import './public/js/app.js'; 
+// import './public/js/app.js';
 const Footer = () => {
   return (
     <footer>
       <div className="footer-grid">
         <ul>
           <div>
-          <img src="/images/logo/SVG/Audiospark_Logo_Icon.svg" alt="" width="75px" id="logoFooterModeLight" />
-            <img src="images/logo/SVG/Audiospark_Logo_White.svg" alt="" width="75px" id="logoFooterModeDark" />
+            <img
+              src="/images/logo/SVG/Audiospark_Logo_Icon.svg"
+              alt=""
+              width="75px"
+              id="logoFooterModeLight"
+            />
+            <img
+              src="images/logo/SVG/Audiospark_Logo_White.svg"
+              alt=""
+              width="75px"
+              id="logoFooterModeDark"
+            />
 
             {/* SOCIAL MEDIA */}
             <ul className="footer-social-media">
@@ -18,7 +28,10 @@ const Footer = () => {
               <a href="https://dribbble.com/Mahdi_Rabiee/" title="Dribbble">
                 <span className="fab fa-dribbble"></span>
               </a>
-              <a href="https://www.pinterest.com/MahdiRabiee82/" title="Pinterest">
+              <a
+                href="https://www.pinterest.com/MahdiRabiee82/"
+                title="Pinterest"
+              >
                 <span className="fab fa-pinterest"></span>
               </a>
             </ul>
@@ -26,10 +39,18 @@ const Footer = () => {
             {/* FOOTER ICON */}
             <ul className="footer-icon">
               <a href="">
-                <img src="images/elements/apple_download.svg" alt="" width="100" />
+                <img
+                  src="images/elements/apple_download.svg"
+                  alt=""
+                  width="100"
+                />
               </a>
               <a href="">
-                <img src="images/elements/google_download.svg" alt="" width="100" />
+                <img
+                  src="images/elements/google_download.svg"
+                  alt=""
+                  width="100"
+                />
               </a>
             </ul>
           </div>
