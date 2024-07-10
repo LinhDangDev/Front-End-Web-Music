@@ -72,7 +72,7 @@ const AllArtist = () => {
                         >
                             <div className="card-row">
                                 {artistData.slice(0, 4).map((artist, index) => ( 
-                                    <Link to={`/artists/${artist.id}`} key={artist.id}>
+                                    <Link to={`/artists/${artist.id}/songs`} key={artist.id}>
                                         <div className={`card-artist-vertical ${artist.className}`}>
                                             <img src={`http://localhost:8080/img/${artist.avatar}`} alt={artist.name} className="artist-avatar" />
                                             <div className='card-body'>
@@ -84,7 +84,7 @@ const AllArtist = () => {
                             </div>
                             <div className="card-row">
                                 {artistData.slice(4, 8).map((artist, index) => ( 
-                                    <Link to={`/artists/${artist.id}`} key={artist.id}>
+                                    <Link to={`/artists/${artist.id}/songs`} key={artist.id}>
                                         <div className={`card-artist-vertical ${artist.className}`}>
                                             <img src={`http://localhost:8080/img/${artist.avatar}`} alt={artist.name} className="artist-avatar" />
                                             <div className='card-body'>

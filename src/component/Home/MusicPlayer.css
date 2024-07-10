@@ -1,0 +1,96 @@
+.music-player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    padding: 9px 308px;
+    justify-content: center; 
+  }
+  
+  .player-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between; 
+  }
+  
+  .section {
+    display: flex;
+    align-items: center;
+  }
+  
+  .section img {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+  }
+  
+  .song-info {
+    line-height: 1.2;
+    text-align: left; /* Align text to the left */
+  }
+  
+  .song-info h4 {
+    margin-bottom: 5px;
+  }
+  
+  .song-info p {
+    margin: 0;
+  }
+  
+  /* Progress Bar Section Styling */
+  .progress-section { 
+    flex-grow: 1; /* Allow progress bar section to take available space */
+    justify-content: center; /* Center the progress bar within its section */
+  }
+  
+  .song-progress {
+    /* You might need to adjust the width based on your content */
+    width: 100%; /* Make progress bar take full width of its section */
+  }
+  
+  .song-progress input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    background: #ddd;
+    outline: none;
+    border-radius: 20px;
+  }
+  
+  .song-progress input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #007bff;
+    cursor: pointer;
+  }
+  
+  .time-display {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 5px;
+  }
+  
+  .controls {
+    justify-content: flex-end;
+  }
+  
+  .controls span {
+    font-size: 1.8rem;
+    margin: 0 8px;
+    cursor: pointer;
+  }
+  
+  .liked {
+    color: red; 
+  }

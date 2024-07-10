@@ -22,8 +22,9 @@ const AppRoutes = () => {
                 <Route path="/authenticate" element={<Authenticate />} />
                 <Route path="/" element={<Home />} />
                 <Route path="/album/:albumId" element={<Album />} />
-                <Route path="/artist" element={<Artist />} />
-                <Route path="/artists" element={<AllArtist />} /> 
+                {/* <Route path="/artist" element={<Artist />} /> */}
+                <Route path="/artists" element={<AllArtist />} />
+                <Route path="/artists/:artistId/songs" element={<Artist />} /> 
                 <Route path="/song" element={<Song />} />
                 <Route path="/all-categories" element={<AllCategory />} />
                 <Route path="/genres" element={<Category />} /> {/* Route cho trang Category */}

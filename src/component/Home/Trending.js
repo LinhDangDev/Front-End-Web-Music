@@ -6,7 +6,7 @@ class Trending extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            songs: []
+            songs: [],
         }
     }
     componentDidMount() {
@@ -44,12 +44,20 @@ class Trending extends React.Component {
 
         document.body.removeChild(aTag);
     }
-    handleOnClickLike = (song) => {
-        console.log(song);
-        song.likes++;
-        SongService.editSong(song.songId, song).catch(err => {
-            console.error('Update song failed: ' + err)
-        });
+    handleOnClickLike = (songId) => {
+        const span = document.getElementById(`like${songId}`);
+        if (span.className == "far fa-heart") {
+            SongService.likeSong(songId).catch(err => {
+                console.error('Like song failed: ' + err)
+            });
+            span.className = "fa-solid fa-heart";
+        }
+        else {
+            SongService.subLikeSong(songId).catch(err => {
+                console.error('Like song failed: ' + err)
+            });
+            span.className = "far fa-heart";
+        }
     }
     togglePlay = (songId) => {
         const audio = document.getElementById(songId);
@@ -101,7 +109,7 @@ class Trending extends React.Component {
                                                 onClick={() => this.togglePlay(item.songId)}
                                             ></span>
                                         </div>
-                                        <Link to={`/song/${item.songId}`}>
+                                        <Link to={`/songs/${item.songId}`}>
                                             <img src={`http://localhost:8080/img/${item.coverImage}`} alt={item.songTitle} />
                                         </Link>
                                         <audio id={item.songId} ref={(audio) => { this.audioElement = audio; }}>
@@ -111,21 +119,20 @@ class Trending extends React.Component {
                                     </figure>
                                     <div className="card-playing-horizontal-body">
                                         <h4>
-                                            <Link to={`/song/${item.songId}`}>{item.songTitle}</Link>
+                                            <Link to={`/songs/${item.songId}/play`}>{item.songTitle}</Link>
                                         </h4>
                                         <p>
-                                            <Link to={`/artist/${item.artistSongs[0].artist.artistId}`}>
+                                            <Link to={`/artist/${item.artistSongs[0].artist.artistId}/songs`}>
                                                 {item.artistSongs[0].artist.artistName}
                                             </Link>
                                         </p>
                                     </div>
                                     <div className="card-playing-horizontal-footer">
                                         <a
-                                            onClick={() => this.handleOnClickLike(item)}
                                             title="Like"
                                             aria-label="Like"
                                         >
-                                            <span className="far fa-heart"></span>
+                                            <span id={`like${item.songId}`} className="far fa-heart" onClick={() => this.handleOnClickLike(item.songId)}></span>
                                         </a>
                                         <a
                                             onClick={() => this.handleDownloadSong(item.filePath)}

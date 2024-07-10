@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
 import PlaylistPost from './PlayListPost';
 import RelatedMusic from './RelatedMusic';
 import MusicPlayer from './MusicPlayer';
@@ -15,10 +15,11 @@ import Backtotop from './Backtotop';
 import SongService from '../../services/SongService';
 import AlbumService from '../../services/AlbumService';
 import ArtistSongService from '../../services/ArtistSongService';
+import AlbumHeader from './AlbumsHeader';
 
 var query;
 var RELATED_MUSIC, prev_query;
-class Songs extends React.Component {
+class Albums extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,26 +29,28 @@ class Songs extends React.Component {
             currentSongIndex: 0,
             isPlaying: false,
             isLiked: false,
+            currentlyPlayingSongId: null,
             audio: new Audio(),
         };
     }
 
     componentDidMount() {
-        query = window.location.pathname.split('/').pop()
+        query = window.location.pathname.split('/').pop();
         this.handleGetData();
     }
     componentDidUpdate() {
-        if (query != prev_query)
+        if (query !== prev_query) {
             this.handleGetData();
+        }
     }
     handleGetData = () => {
         const { audio } = this.state;
         audio.onended = this.handleNextSong;
-        this.setState({ queryUrl: query })
+        this.setState({ queryUrl: query });
         let ARTIST_SONGS = [];
         let ALBUM = null;
         let SONGS = [];
-        prev_query = query
+        prev_query = query;
         ArtistSongService.getAll()
             .then((res) => {
                 ARTIST_SONGS = res.result;
@@ -72,18 +75,45 @@ class Songs extends React.Component {
 
     handleSongClick = (index) => {
         const { audio } = this.state;
-        this.setState({ isPlaying: true, currentSongIndex: index });
-        audio.src = `http://localhost:8080/music/${this.state.album.songs[index].filePath}`;
-        audio.play();
-    };
+        const newSong = this.state.album.songs[index];
+    
+        if (this.state.currentSongIndex === index) {
+          // Toggle play/pause cho cùng một bài hát
+            if (this.state.isPlaying) {
+            audio.pause();
+            } else {
+            // Sử dụng audio.play() với Promise để xử lý lỗi
+            audio.play().catch(error => {
+                // Xử lý lỗi nếu có (ví dụ: in lỗi ra console)
+                console.error('Lỗi khi phát nhạc:', error);
+            }); 
+            }
+            this.setState({ isPlaying: !this.state.isPlaying });
+        } else {
+            // Bài hát khác, dừng bài hát hiện tại trước khi phát bài mới
+            audio.pause();
+            audio.src = `http://localhost:8080/music/${newSong.filePath}`;
+            audio.load(); // Đảm bảo bài hát được tải lại
+            audio.play().catch(error => {
+            console.error('Lỗi khi phát nhạc:', error);
+            });
+            this.setState({
+            currentSongIndex: index,
+            isPlaying: true,
+            currentlyPlayingSongId: newSong.songId,
+            });
+        }
+        };
 
     handlePlayPauseClick = () => {
         const { audio, isPlaying } = this.state;
-        if (isPlaying) {
-            audio.pause();
-        } else {
-            audio.play();
-        }
+        try {
+            if (isPlaying) {
+                audio.pause();
+            } else {
+                audio.play();
+            }
+        } catch (err) { }
         this.setState({ isPlaying: !isPlaying });
     };
 
@@ -105,49 +135,48 @@ class Songs extends React.Component {
     };
 
     render() {
-        const { currentSongIndex, isPlaying, isLiked } = this.state;
+        const { currentSongIndex, isPlaying, isLiked, currentlyPlayingSongId } = this.state;
         return (
-            
-                <div className='app-container'>
-                    <Loader />
-                    <NavBar />
-                    <SupportChatMode />
-                    <HeaderHero />
-                    
-                    <main className="user-page">
-                        {this.state.album !== null && (
-                            <>
-                                <PlaylistPost
-                                    playlist={this.state.album}
-                                    onSongClick={this.handleSongClick}
-                                    isPlaying={isPlaying}
-                                    isLiked={isLiked}
-                                    onLikeClick={this.handleLikeClick}
-                                    currentSongIndex={currentSongIndex}
-                                />
-                                <RelatedMusic relatedMusics={this.state.relatedMusics} />
-                                <MusicPlayer
-                                    currentSong={this.state.album.songs[currentSongIndex]}
-                                    isPlaying={isPlaying}
-                                    onPlayPauseClick={this.handlePlayPauseClick}
-                                    onLikeClick={this.handleLikeClick}
-                                    isLiked={isLiked}
-                                />
-                                <FullPlayer
-                                    currentSong={this.state.album.songs[currentSongIndex]}
-                                    onPlayPauseClick={this.handlePlayPauseClick}
-                                    isPlaying={isPlaying}
-                                    onNextSong={this.handleNextSong}
-                                    onPrevSong={this.handlePrevSong}
-                                />
-                                {/* <Download currentSong={this.state.album.songs[currentSongIndex]} /> */}
-                            </>
-                        )}
-                    </main>
-                    <Footer />
-                    <Backtotop />
-                </div>
+            <div className='app-container'>
+                <Loader />
+                <NavBar />
+                <SupportChatMode />
+                <SearchMode />
 
+                <main className="user-page">
+                    <AlbumHeader album={this.state.album} />
+                    {this.state.album !== null && (
+                        <>
+                            <PlaylistPost
+                                playlist={this.state.album}
+                                onSongClick={this.handleSongClick}
+                                isPlaying={isPlaying}
+                                isLiked={isLiked}
+                                onLikeClick={this.handleLikeClick}
+                                currentSongIndex={currentSongIndex}
+                                currentlyPlayingSongId={currentlyPlayingSongId}
+                            />
+                            <RelatedMusic relatedMusics={this.state.relatedMusics} />
+                            <MusicPlayer
+                                currentSong={this.state.album.songs[currentSongIndex]}
+                                isPlaying={isPlaying}
+                                onPlayPauseClick={this.handlePlayPauseClick}
+                                onLikeClick={this.handleLikeClick}
+                                isLiked={isLiked}
+                            />
+                            {/* <FullPlayer
+                                currentSong={this.state.album.songs[currentSongIndex]}
+                                onPlayPauseClick={this.handlePlayPauseClick}
+                                isPlaying={isPlaying}
+                                onNextSong={this.handleNextSong}
+                                onPrevSong={this.handlePrevSong}
+                            /> */}
+                        </>
+                    )}
+                </main>
+                <Footer />
+                <Backtotop />
+            </div>
         );
     }
 }
@@ -176,7 +205,7 @@ function insertSongIntoAlbum(album, arrSongs) {
 }
 
 function splitArrayGroup(arrSongs) {
-    let chunkSize = 3; // Kích thước của mỗi mảng con
+    let chunkSize = 3; 
     let groupedArray = [];
     for (let i = 0; i < arrSongs.length; i += chunkSize) {
         groupedArray.push(arrSongs.slice(i, i + chunkSize));
@@ -184,4 +213,4 @@ function splitArrayGroup(arrSongs) {
     return groupedArray;
 }
 
-export default Songs;
+export default Albums;
