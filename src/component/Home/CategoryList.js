@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from './Footer';
-// import HeaderHero from './HeaderHero'; // Uncomment if you plan to use it
 import Loader from './Loader';
 import NavBar from './NavBar';
 import SearchMode from './SearchMode';
 import SupportChatMode from './SupportChatMode';
 import GenreService from '../../services/GenreService';
+
 
 const AllCategory = () => {
     const [categoryData, setCategoryData] = useState([]);
@@ -51,13 +51,13 @@ const AllCategory = () => {
     };
 
     return (
-        <div>
-            <Loader />
-            <NavBar />
+        <div className="app-container"> {/* Wrap everything in a main container */}
+            <NavBar /> 
             <SupportChatMode />
             <SearchMode />
-            {/* <HeaderHero /> Uncomment if you plan to use it */}
-            <main>
+
+            <main className="main-container">
+                <Loader />
                 <section className="section-category" id="category">
                     <div className='container'>
                         <div className="section-category-header">

@@ -26,12 +26,12 @@ const PopularArtists = () => {
     <section className="section-popular-artists" id="popular_artists">
       <div>
         <h2>Popular Artists</h2>
-        <p> <Link to="#">See all</Link></p>
+        <p> <Link to="/artists">See all</Link></p>
       </div>
 
       <div className="card-grid-slider">
         {artistData.map((artist) => (
-          <Link to={`/artist/${artist.id}/songs`} key={artist.id}> 
+          <Link to={`/artist/${artist.id}/songs`} key={artist.id}>
             <div className="card-artists-vertical">
               <figure>
                 <img src={artist.imageUrl} alt={artist.name} /> {/* Use artist.imageUrl */}

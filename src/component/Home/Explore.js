@@ -1,6 +1,7 @@
 import React from "react";
 import SongService from "../../services/SongService"
 import { Link } from "react-router-dom";
+var SONGS, TOP_SONGS, NEW_SONG, TOP_DOWNS;
 class Explore extends React.Component {
     constructor(props) {
         super(props);
@@ -10,44 +11,36 @@ class Explore extends React.Component {
     }
     componentDidMount() {
         SongService.getAll().then((res) => {
-            if (res && res.result) { // Check if 'res' and 'res.result' exist
-                const filteredSongs = this.filterSongs(res.result); 
-                this.setState({ songs: filteredSongs });
-            } else {
-                console.error("API response doesn't have the expected format:", res);
-                // Handle the error gracefully, perhaps by setting a default state or showing an error message
-            }
-        });
+            SONGS = res.result;
+            createSort(SONGS);
+            this.setState({ songs: NEW_SONG });
+        }).catch(err => {
+            console.error('Get songs failed: ' + err);
+        });;
     }
-    // Move filtering and sorting logic inside the component
-    filterSongs(arrSongs) {
-        if (Array.isArray(arrSongs)) { // Check if arrSongs is an array
-            //sort songs
-            arrSongs.sort((a, b) => b.releaseDate - a.releaseDate);
-            // filter songs
-            return arrSongs.slice(0, 5); 
-        } else {
-            console.warn("filterSongs: arrSongs is not an array", arrSongs);
-            return []; // Return an empty array to avoid errors in the rendering
-        }
+    handleNewSong = () => {
+        this.setState({ songs: NEW_SONG });
     }
-    
+    handleTopSong = () => {
+        this.setState({ songs: TOP_SONGS })
+    }
+    handleTopDowns = () => {
+        this.setState({ songs: TOP_DOWNS })
+    }
+
     render() {
         return (
             <section className="section-explore" id="explore">
                 {/* <!-- EXPLORE MENU --> */}
                 <div className="section-explore-menu">
-                    <Link to="#new-musics" className="section-explore-menu-item-active">
-                        Top Musics
+                    <Link to="" onClick={this.handleNewSong} className="section-explore-menu-item-active">
+                        Newest Songs
                     </Link>
-                    <Link to="#recently-played" className="section-explore-menu-item">
-                        Recently Played
+                    <Link to="" onClick={this.handleTopSong} className="section-explore-menu-item">
+                        Top Songs
                     </Link>
-                    <Link to="#new-musics" className="section-explore-menu-item">
-                        New Musics
-                    </Link>
-                    <Link to="#bestsellers" className="section-explore-menu-item">
-                        Bestsellers
+                    <Link to="" onClick={this.handleTopDowns} className="section-explore-menu-item">
+                        Top Downloads
                     </Link>
                 </div>
 
@@ -55,14 +48,14 @@ class Explore extends React.Component {
                 <div className="card-grid-slider">
                     {this.state.songs.map((item, index) => (
                         <div className="card-simple" key={item.songId}>
-                            <Link to={`/song/${item.songId}`}>
+                            <Link to={{ pathname: `/songs/${item.songId}/play`, state: { song: { item }, relatedMusic: { SONGS } } }}>
                                 <figure>
-                                    <img src={`http://localhost:8080/src/main/static/img/${item.coverImage}`} alt={item.songTitle} />
+                                    <img src={`http://localhost:8080/img/${item.coverImage}`} alt={item.songTitle} />
                                 </figure>
                                 <h3>{item.songTitle}</h3>
                             </Link>
                             <p>
-                                <Link to={`/artist/${item.artistSongs[0].id}`}>{getArtists(item.artistSongs)}</Link>
+                                <p>{item.artistSongs[0].artist.artistName}</p>
                             </p>
                         </div>
                     ))}
@@ -74,30 +67,12 @@ class Explore extends React.Component {
 };
 
 
-function getArtists(arrArtist) {
-    var result = '';
-    arrArtist.map((item, index) => {
-        result += item.artist.artistName;
-    })
-    return result;
+function createSort(arrSongs) {
+    TOP_SONGS = arrSongs.sort((a, b) => b.likes - a.likes).slice(0, 6);
+    NEW_SONG = arrSongs.sort((a, b) => b.releaseDate - a.releaseDate).slice(0, 6);
+    TOP_DOWNS = arrSongs.sort((a, b) => b.downloads - a.downloads).slice(0, 6);
 }
 
 // Sample music data - replace with your actual data
-// const musicData = [
-//     {
-//         id: 1,
-//         title: 'Acceleration',
-//         artist: 'Amadea Music Productions',
-//         artistId: 1,
-//         imageUrl: 'images/covers/Acceleration-Amadea-Music-Productions-400x400.jpeg',
-//     },
-//     {
-//         id: 2,
-//         title: 'Charged',
-//         artist: 'Charged',
-//         imageUrl: 'images/covers/Charged-400x400.jpg'
-//     },
-//     // Add more music data here
-// ];
 
 export default Explore;

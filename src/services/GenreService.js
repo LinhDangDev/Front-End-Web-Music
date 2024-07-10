@@ -19,18 +19,18 @@ class GenreService {
     }
     getSongsByGenreId(genreId) {
         return fetch(`${GENRE_REST_API_URL}/${genreId}/songs`, {
-          // Endpoint mới để lấy bài hát theo thể loại
-        method: 'GET',
-        headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-        },
-    })
-        .then((res) => res.json())
-        .catch((err) => {
-        console.error('Get songs by genre failed:', err);
-        });
+            // Endpoint mới để lấy bài hát theo thể loại
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`,
+            },
+        })
+            .then((res) => res.json())
+            .catch((err) => {
+                console.error('Get songs by genre failed:', err);
+            });
     }
     getGenre(id) {
         return fetch(`${GENRE_REST_API_URL}/${id}`, {

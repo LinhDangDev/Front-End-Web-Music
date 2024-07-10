@@ -3,7 +3,7 @@ export default function HeaderHero() {
         // <!-- HEADER/HERO -->
         <header className="hero">
             {/* <!-- TITLE HEADER --> */}
-            <h1>An unparalleled experience of <br /> sound magic, Audiospark</h1>
+            <h1>An unparalleled experience of <br /> sound magic, Inspired Melody</h1>
 
             {/* <!-- FORM: SEARCH --> */}
             <form action="" method="post">

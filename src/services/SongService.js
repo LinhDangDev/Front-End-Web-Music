@@ -17,20 +17,20 @@ class SongService {
                 console.error('Get all songs failed: ' + err);
             });
     }
-    
+
     getSongForPlay(id) {
         return fetch(`${SONG_REST_API_URL}/${id}/play`, { // Gọi endpoint mới
             method: 'GET',
             headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
             }
         }).then(res => res.json())
             .catch(err => {
-            console.error('Get song for playing failed:', err);
+                console.error('Get song for playing failed:', err);
             });
-        }
+    }
     getSong(id) {
         return fetch(`${SONG_REST_API_URL}/${id}`, {
             method: 'GET',

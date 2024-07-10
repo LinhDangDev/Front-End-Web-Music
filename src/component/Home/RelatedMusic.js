@@ -1,72 +1,120 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import SongService from '../../services/SongService';
 
 const RelatedMusic = ({ relatedMusics }) => {
-    return (
-    <section className="section-trending">
-        <div>
-        <h2>Related Musics</h2>
-        <p>
-            <a href="">See all</a>
-        </p>
-        </div>
+    const handleDownloadSong = async (fileName) => {
+        try {
+            const link = `http://localhost:8080/music/${fileName}`;
+            const response = await fetch(link);
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(new Blob([blob]));
 
-        <div className="card-grid-slider">
-        {relatedMusics.map((group, groupIndex) => (
-            <div key={groupIndex} className="card-group-grid">
-            {group.map((music, musicIndex) => (
-                <div key={musicIndex} className="card-playing-horizontal">
-                <figure className="card-playing-horizontal-header">
-                    <div>
-                    <span
-                        className="far fa-play"
-                        onClick={() => {
-                        // Xử lý logic khi click nút play
-                        console.log('Play button clicked!');
-                        }}
-                    ></span>
-                    </div>
-                    <a href="post.html">
-                    <img src={music.cover} alt={music.title} />
-                    </a>
-                </figure>
-                <div className="card-playing-horizontal-body">
-                    <h4>
-                    <a href="post.html">{music.title}</a>
-                    </h4>
-                    <p>
-                    <a href="user.html">{music.artist}</a>
-                    </p>
-                </div>
-                <div className="card-playing-horizontal-footer">
-                    <a
-                    href="javascript:void(0)"
-                    onClick={() => {
-                        // Xử lý logic khi click nút like
-                        console.log('Like button clicked!');
-                    }}
-                    title="Like"
-                    aria-label="Like"
-                    >
-                    <span className="far fa-heart"></span>
-                    </a>
-                    <a
-                    href="javascript:void(0)"
-                    onClick={() => {
-                        // Xử lý logic khi click nút download
-                        console.log('Download button clicked!');
-                    }}
-                    title="Download"
-                    aria-label="Download"
-                    >
-                    <span className="far fa-download"></span>
-                    </a>
-                </div>
-                </div>
-            ))}
+            const aTag = document.createElement('a');
+            aTag.href = url;
+            aTag.setAttribute('download', fileName);
+            document.body.appendChild(aTag);
+            aTag.click();
+            document.body.removeChild(aTag);
+        } catch (err) {
+            console.error('Download failed: ' + err);
+        }
+    };
+
+    const handleOnClickLike = async (song) => {
+        try {
+            const updatedSong = { ...song, likes: song.likes + 1 };
+            await SongService.editSong(song.songId, updatedSong);
+            // Update relatedMusics state or trigger a refresh if necessary
+        } catch (err) {
+            console.error('Update song failed: ' + err);
+        }
+    };
+
+    const togglePlay = (songId) => {
+        const audio = document.getElementById(songId);
+        const span = document.getElementById(`span${songId}`);
+
+        if (audio.paused) {
+            audio.play();
+            span.className = "far fa-stop";
+        } else {
+            audio.pause();
+            span.className = "far fa-play";
+        }
+
+        // Pause remaining audios
+        const list_audios = document.getElementsByTagName('audio');
+        Array.from(list_audios).forEach((aud) => {
+            if (aud !== audio) aud.pause();
+        });
+
+        // Reset other spans
+        const list_spans = document.getElementsByClassName("far fa-stop");
+        Array.from(list_spans).forEach((sp) => {
+            if (sp !== span) sp.className = "far fa-play";
+        });
+    };
+
+    return (
+        <section className="section-trending" id="trending">
+            <div>
+                <h2>Related Music</h2>
             </div>
-        ))}
-        </div>
-    </section>
+
+            <div className="card-grid-slider">
+                {relatedMusics.map((group, groupIndex) => (
+                    <div className="card-group-grid" key={groupIndex}>
+                        {group.map((item) => (
+                            <div className="card-playing-horizontal" key={item.songId}>
+                                <figure className="card-playing-horizontal-header">
+                                    <div>
+                                        <span
+                                            id={`span${item.songId}`}
+                                            className="far fa-play"
+                                            onClick={() => this.togglePlay(item.songId)}
+                                        ></span>
+                                    </div>
+                                    <Link to={`/song/${item.songId}`}>
+                                        <img src={`http://localhost:8080/img/${item.coverImage}`} alt={item.songTitle} />
+                                    </Link>
+                                    <audio id={item.songId}>
+                                        <source src={`http://localhost:8080/music/${item.filePath}`} type="audio/mp3" />
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </figure>
+                                <div className="card-playing-horizontal-body">
+                                    <h4>
+                                        <Link to={`/song/${item.songId}`}>{item.songTitle}</Link>
+                                    </h4>
+                                    <p>
+                                        <Link to={`/artist/${item.artistSongs[0].artist.artistId}`}>
+                                            {item.artistSongs[0].artist.artistName}
+                                        </Link>
+                                    </p>
+                                </div>
+                                <div className="card-playing-horizontal-footer">
+                                    <a
+                                        onClick={() => handleOnClickLike(item)}
+                                        title="Like"
+                                        aria-label="Like"
+                                    >
+                                        <span className="far fa-heart"></span>
+                                    </a>
+                                    <a
+                                        onClick={() => handleDownloadSong(item.filePath)}
+                                        title="Download"
+                                        aria-label="Download"
+                                    >
+                                        <span className="far fa-download"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ))}
+            </div>
+        </section>
     );
 };
 

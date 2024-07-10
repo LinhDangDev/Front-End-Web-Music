@@ -86,7 +86,7 @@ const Footer = () => {
 
       {/* FOOTER COPYRIGHT */}
       <div className="footer-copyright">
-        <p>© 2023 Audiospark. All rights reserved.</p>
+        <p>© 2024 Insprited Melody. All rights reserved.</p>
       </div>
     </footer>
   );
