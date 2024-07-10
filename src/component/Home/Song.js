@@ -4,7 +4,6 @@ import SongService from '../../services/SongService';
 import Loader from './Loader';
 import { formatTime } from '../../utils/timeUtils';
 import './Song.css';
-import Footer from './Footer';
 
 const Song = () => {
   const { id } = useParams();
@@ -119,17 +118,17 @@ const Song = () => {
         </div>
 
         <div className="song-progress">
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={(currentTime / duration) * 100 || 0}
-            onChange={handleProgressChange}
-          />
-          <div className="time-display">
-            <span>{formatTime(currentTime)}</span> / <span>{formatTime(duration)}</span>
-          </div>
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value={(currentTime / duration) * 100 || 0}
+          onChange={handleProgressChange}
+        />
+        <div className="time-display">
+          <span>{formatTime(currentTime)}</span> / <span>{formatTime(duration)}</span>
         </div>
+      </div>
 
         <div className="player-controls">
         <button className="control-button">
