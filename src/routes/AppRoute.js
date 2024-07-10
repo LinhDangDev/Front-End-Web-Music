@@ -13,7 +13,7 @@ import Song from "../component/Home/Song";
 import AllCategory from '../component/Home/CategoryList';
 import Category from '../component/Home/Category';
 import CategoryPageSong from '../component/Home/CategoryPageSong';
-
+import AllArtist from '../component/Home/ArtistList';
 const AppRoutes = () => {
     return (
         <Router>
@@ -23,6 +23,7 @@ const AppRoutes = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/album" element={<Album />} />
                 <Route path="/artist" element={<Artist />} />
+                <Route path="/artists" element={<AllArtist />} /> 
                 <Route path="/song" element={<Song />} />
                 <Route path="/all-categories" element={<AllCategory />} />
                 <Route path="/genres" element={<Category />} /> {/* Route cho trang Category */}

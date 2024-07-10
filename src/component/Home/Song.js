@@ -4,6 +4,7 @@ import SongService from '../../services/SongService';
 import Loader from './Loader';
 import { formatTime } from '../../utils/timeUtils';
 import './Song.css';
+import Footer from './Footer';
 
 const Song = () => {
   const { id } = useParams();
