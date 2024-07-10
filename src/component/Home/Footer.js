@@ -7,8 +7,8 @@ const Footer = () => {
       <div className="footer-grid">
         <ul>
           <div>
-            <img src="images/logo/SVG/Audiospark_Logo.svg" alt="" width="150px" id="logoFooterModeLight" />
-            <img src="images/logo/SVG/Audiospark_Logo_White.svg" alt="" width="150px" id="logoFooterModeDark" />
+          <img src="/images/logo/SVG/Audiospark_Logo_Icon.svg" alt="" width="75px" id="logoFooterModeLight" />
+            <img src="images/logo/SVG/Audiospark_Logo_White.svg" alt="" width="75px" id="logoFooterModeDark" />
 
             {/* SOCIAL MEDIA */}
             <ul className="footer-social-media">

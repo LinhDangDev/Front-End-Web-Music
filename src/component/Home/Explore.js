@@ -48,7 +48,7 @@ class Explore extends React.Component {
                 <div className="card-grid-slider">
                     {this.state.songs.map((item, index) => (
                         <div className="card-simple" key={item.songId}>
-                            <Link to={{ pathname: `/song/${item.songId}/play`, state: { song: { item }, relatedMusic: { SONGS } } }}>
+                            <Link to={{ pathname: `/songs/${item.songId}/play`, state: { song: { item }, relatedMusic: { SONGS } } }}>
                                 <figure>
                                     <img src={`http://localhost:8080/img/${item.coverImage}`} alt={item.songTitle} />
                                 </figure>

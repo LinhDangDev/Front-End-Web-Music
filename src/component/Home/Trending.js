@@ -119,10 +119,10 @@ class Trending extends React.Component {
                                     </figure>
                                     <div className="card-playing-horizontal-body">
                                         <h4>
-                                            <Link to={`/song/${item.songId}`}>{item.songTitle}</Link>
+                                            <Link to={`/songs/${item.songId}/play`}>{item.songTitle}</Link>
                                         </h4>
                                         <p>
-                                            <Link to={`/artist/${item.artistSongs[0].artist.artistId}`}>
+                                            <Link to={`/artist/${item.artistSongs[0].artist.artistId}/songs`}>
                                                 {item.artistSongs[0].artist.artistName}
                                             </Link>
                                         </p>

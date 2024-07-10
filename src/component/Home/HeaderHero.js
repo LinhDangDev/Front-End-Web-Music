@@ -1,9 +1,11 @@
+
+import React from "react";
 export default function HeaderHero() {
     return (
         // <!-- HEADER/HERO -->
         <header className="hero">
             {/* <!-- TITLE HEADER --> */}
-            <h1>An unparalleled experience of <br /> sound magic, Inspired Melody</h1>
+            <h1>An unparalleled experience of <br /> sound magic, Inspied Melody</h1>
 
             {/* <!-- FORM: SEARCH --> */}
             <form action="" method="post">

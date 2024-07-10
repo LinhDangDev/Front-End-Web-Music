@@ -1,0 +1,148 @@
+/* HeaderHero */
+.section-header-hero {
+    position: relative;
+    background-color: #f2f2f2;
+    padding: 50px 0;
+}
+
+.section-header-hero-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-header-hero-image {
+    width: 300px;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.section-header-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.section-header-hero-info {
+    margin-left: 50px;
+}
+
+.section-header-hero-info h1 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.section-header-hero-info p {
+    font-size: 16px;
+    color: #777;
+    margin-bottom: 5px;
+}
+
+/* PlayListPost */
+.section-playlist-post {
+    padding: 50px 0;
+}
+
+.section-playlist-post-header {
+    margin-bottom: 20px;
+}
+
+.section-playlist-post-header h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.section-playlist-post-header p {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 5px;
+}
+
+.section-playlist-post-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.section-playlist-post-play-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    background-color: white;
+    border-radius: 10px;
+    transition: all 0.2s ease-in-out;
+}
+
+.section-playlist-post-play-card:hover {
+    background-color: #f2f2f2;
+}
+
+.section-playlist-post-play-card.active {
+    background-color: #eee;
+}
+
+.section-playlist-post-play-card.first-song {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.section-playlist-post-play-card.last-song {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.section-playlist-post-play-card h4 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.section-playlist-post-play-card h4 a {
+    color: #333;
+    text-decoration: none;
+}
+
+.section-playlist-post-play-card p {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 0;
+}
+
+.section-playlist-post-footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.section-playlist-post-footer p {
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 0;
+}
+
+/* Icons */
+.far.fa-play,
+.far.fa-pause,
+.far.fa-download,
+.far.fa-heart {
+    font-size: 18px;
+    margin-right: 10px;
+    cursor: pointer;
+    color: #333;
+    transition: color 0.2s ease-in-out;
+}
+
+.far.fa-play:hover,
+.far.fa-pause:hover,
+.far.fa-download:hover,
+.far.fa-heart:hover {
+    color: #007bff;
+}
+
+.far.fa-heart.liked {
+    color: red;
+}

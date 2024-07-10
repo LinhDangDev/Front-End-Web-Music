@@ -48,6 +48,7 @@ const Song = () => {
     const audio = audioRef.current;
     if (isPlaying) {
       audio.pause();
+      
     } else {
       audio.play();
     }

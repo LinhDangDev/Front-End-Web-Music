@@ -43,7 +43,7 @@ const NavBar = () => {
             <ul>
 
                 <a href="javascript:void(0)" onclick="navbarMobileToggle()" title="Menu" aria-label="Menu" class="fa-bars-mobile"><span class="far fa-bars"></span></a>
-                <a href="/"><img src="images/logo/SVG/Audiospark_Logo_Icon.svg" alt="" title="Audiospark" /></a>
+                <a href="/"><img src="/images/logo/SVG/Audiospark_Logo_Icon.svg" alt="" width="150px" id="logoFooterModeLight" /></a>
 
                 <ul id="navbarMobileToggle" className={isMobileMenuOpen ? 'open' : ''}> {/* Apply "open" class based on state */}
                     <a href="javascript:void(0)" onClick={navbarMobileToggle} title="Close Menu" aria-label="Close Menu" className="fa-close-mobile">
@@ -78,7 +78,7 @@ const NavBar = () => {
                     <span className="far fa-search"></span>
                 </a>
                 <a href="javascript:void(0)" onClick={avatarDropdown}>
-                    <img src="../../../public/images/avatar/avatar-1.png" alt="" />
+                    <img src="images/avatar/avatar-1.png" alt="" />
                 </a>
 
                 {/* AVATAR DORPDOWN */}
