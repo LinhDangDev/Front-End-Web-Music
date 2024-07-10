@@ -1,4 +1,3 @@
-// Register.jsx
 import React, { useState } from "react";
 import {
   Alert,
@@ -11,8 +10,9 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import UserNav from "./UserNav"; // Import UserNav component
 
-const Register = () => {
+const CreateUser = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -40,7 +40,7 @@ const Register = () => {
     setSnackBarOpen(true);
   };
 
-  const handleRegister = (event) => {
+  const handleCreateUser = (event) => {
     event.preventDefault();
 
     const data = {
@@ -56,20 +56,15 @@ const Register = () => {
       },
       body: JSON.stringify(data),
     })
-      .then((response) => {
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
         console.log(data);
         if (data.code !== 1000) throw new Error(data.message);
-        // if (data.code === 1002) throw new Error(data.message);
-        // if (data.code === 1008) throw new Error(data.message);
       })
-
-      .then((data) => {
-        showSuccess("User registered successfully");
+      .then(() => {
+        showSuccess("User created successfully");
         setTimeout(() => {
-          navigate("/login");
+          navigate("/admin");
         }, 2000);
       })
       .catch((error) => {
@@ -78,44 +73,45 @@ const Register = () => {
   };
 
   return (
-    <>
-      <Snackbar
-        open={snackBarOpen}
-        onClose={handleCloseSnackBar}
-        autoHideDuration={6000}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert
-          onClose={handleCloseSnackBar}
-          severity={snackType}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {snackBarMessage}
-        </Alert>
-      </Snackbar>
+    <Box sx={{ display: "flex" }}>
+      <UserNav /> {/* Include UserNav component here */}
       <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        height="100vh"
-        bgcolor={"#f0f2f5"}
+        sx={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
+          bgcolor: "#f0f2f5",
+          pl: { xs: 0, md: 4 },
+          pr: { xs: 0, md: 4 }, // Adjust left padding based on screen size
+        }}
       >
         <Card
           sx={{
             minWidth: 250,
-            maxWidth: 400,
+            maxWidth: 600,
+            width: "100%",
             boxShadow: 4,
             borderRadius: 4,
-            padding: 4,
+            p: 2, // Simplified padding setting
           }}
         >
           <CardContent>
-            <Typography variant="h5" component="h1" gutterBottom>
-              Register
+            <Typography
+              variant="h5"
+              component="h1"
+              textAlign="center"
+              gutterBottom
+            >
+              Create User
             </Typography>
-            <Box component="form" onSubmit={handleRegister} sx={{ mt: 2 }}>
+            <Box
+              component="form"
+              onSubmit={handleCreateUser}
+              sx={{ mt: 2, width: "100%" }} // Ensure form width spans full card width
+            >
               <TextField
                 label="Username"
                 variant="outlined"
@@ -149,14 +145,29 @@ const Register = () => {
                 fullWidth
                 sx={{ mt: 2 }}
               >
-                Register
+                Create User
               </Button>
             </Box>
           </CardContent>
         </Card>
       </Box>
-    </>
+      <Snackbar
+        open={snackBarOpen}
+        onClose={handleCloseSnackBar}
+        autoHideDuration={6000}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={handleCloseSnackBar}
+          severity={snackType}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {snackBarMessage}
+        </Alert>
+      </Snackbar>
+    </Box>
   );
 };
 
-export default Register;
+export default CreateUser;

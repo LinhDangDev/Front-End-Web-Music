@@ -9,6 +9,7 @@ import Loader from './Loader';
 import { useNavigate } from 'react-router-dom';
 import { getToken } from '../../services/localStorageService';
 import { useEffect } from "react";
+import TestApi from "./TestApi"
 
 
 export default function Home() {
@@ -23,7 +24,7 @@ export default function Home() {
 
     return (
         <>
-            <Loader />
+            {/* <Loader /> */}
             <NavBar />
             <SupportChatMode />
             <SearchMode />

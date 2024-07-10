@@ -41,7 +41,7 @@ export default function ForgotPassword() {
   const handleSendOtp = (event) => {
     event.preventDefault();
 
-    fetch(`http://localhost:8080/identity/forgotPassword/verifyMail/${email}`, {
+    fetch(`http://localhost:8080/forgotPassword/verifyMail/${email}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

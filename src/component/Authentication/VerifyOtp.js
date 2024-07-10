@@ -41,15 +41,12 @@ export default function VerifyOtp() {
   const handleVerifyOtp = (event) => {
     event.preventDefault();
 
-    fetch(
-      `http://localhost:8080/identity/forgotPassword/verifyOtp/${otp}/${email}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
+    fetch(`http://localhost:8080/forgotPassword/verifyOtp/${otp}/${email}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to verify OTP.");

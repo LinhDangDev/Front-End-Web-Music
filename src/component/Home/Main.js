@@ -7,7 +7,7 @@ export default function Main() {
     return (
         // <!-- MAIN -->
         <main>
-
+                {/* //Explore Component */}
             <Explore />
 
             {/* <!-- #SECTION: FEATURED CREATORS --> */}
