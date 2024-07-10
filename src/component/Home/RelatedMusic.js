@@ -21,13 +21,19 @@ const RelatedMusic = ({ relatedMusics }) => {
         }
     };
 
-    const handleOnClickLike = async (song) => {
-        try {
-            const updatedSong = { ...song, likes: song.likes + 1 };
-            await SongService.editSong(song.songId, updatedSong);
-            // Update relatedMusics state or trigger a refresh if necessary
-        } catch (err) {
-            console.error('Update song failed: ' + err);
+    const handleOnClickLike = async (songId) => {
+        const span = document.getElementById(`like${songId}`);
+        if (span.className == "far fa-heart") {
+            SongService.likeSong(songId).catch(err => {
+                console.error('Like song failed: ' + err)
+            });
+            span.className = "fa-solid fa-heart";
+        }
+        else {
+            SongService.subLikeSong(songId).catch(err => {
+                console.error('Like song failed: ' + err)
+            });
+            span.className = "far fa-heart";
         }
     };
 
@@ -72,7 +78,7 @@ const RelatedMusic = ({ relatedMusics }) => {
                                         <span
                                             id={`span${item.songId}`}
                                             className="far fa-play"
-                                            onClick={() => this.togglePlay(item.songId)}
+                                            onClick={() => togglePlay(item.songId)}
                                         ></span>
                                     </div>
                                     <Link to={`/song/${item.songId}`}>
@@ -95,7 +101,7 @@ const RelatedMusic = ({ relatedMusics }) => {
                                 </div>
                                 <div className="card-playing-horizontal-footer">
                                     <a
-                                        onClick={() => handleOnClickLike(item)}
+                                        onClick={() => handleOnClickLike(item.songId)}
                                         title="Like"
                                         aria-label="Like"
                                     >

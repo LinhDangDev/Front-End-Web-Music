@@ -78,7 +78,7 @@ const NavBar = () => {
                     <span className="far fa-search"></span>
                 </a>
                 <a href="javascript:void(0)" onClick={avatarDropdown}>
-                    <img src="images/avatar/avatar-1.png" alt="" />
+                    <img src="../../../public/images/avatar/avatar-1.png" alt="" />
                 </a>
 
                 {/* AVATAR DORPDOWN */}

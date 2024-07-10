@@ -17,6 +17,32 @@ class SongService {
                 console.error('Get all songs failed: ' + err);
             });
     }
+    likeSong(id) {
+        return fetch(`${SONG_REST_API_URL}/like/${id}`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }).then(res => res.json())
+            .catch(err => {
+                console.error('Like song failed:', err);
+            });
+    }
+    subLikeSong(id) {
+        return fetch(`${SONG_REST_API_URL}/subLike/${id}`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }).then(res => res.json())
+            .catch(err => {
+                console.error('Sub like song failed:', err);
+            });
+    }
 
     getSongForPlay(id) {
         return fetch(`${SONG_REST_API_URL}/${id}/play`, { // Gọi endpoint mới
@@ -49,7 +75,7 @@ class SongService {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8',
                 'Authorization': `Bearer ${accessToken}`
             },
             body: JSON.stringify(song)
@@ -58,14 +84,15 @@ class SongService {
                 console.error('Add song failed: ' + err);
             });
     }
-    editSong(id) {
+    editSong(id, song) {
         return fetch(`${SONG_REST_API_URL}/${id}`, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${accessToken}`
-            }
+            },
+            body: JSON.stringify(song)
         }).then(res => res.json())
             .catch(err => {
                 console.error('Update song failed: ' + err);

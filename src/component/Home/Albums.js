@@ -79,11 +79,13 @@ class Songs extends React.Component {
 
     handlePlayPauseClick = () => {
         const { audio, isPlaying } = this.state;
-        if (isPlaying) {
-            audio.pause();
-        } else {
-            audio.play();
-        }
+        try {
+            if (isPlaying) {
+                audio.pause();
+            } else {
+                audio.play();
+            }
+        } catch (err) { }
         this.setState({ isPlaying: !isPlaying });
     };
 

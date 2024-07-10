@@ -6,7 +6,7 @@ class Trending extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            songs: []
+            songs: [],
         }
     }
     componentDidMount() {
@@ -44,12 +44,20 @@ class Trending extends React.Component {
 
         document.body.removeChild(aTag);
     }
-    handleOnClickLike = (song) => {
-        console.log(song);
-        song.likes++;
-        SongService.editSong(song.songId, song).catch(err => {
-            console.error('Update song failed: ' + err)
-        });
+    handleOnClickLike = (songId) => {
+        const span = document.getElementById(`like${songId}`);
+        if (span.className == "far fa-heart") {
+            SongService.likeSong(songId).catch(err => {
+                console.error('Like song failed: ' + err)
+            });
+            span.className = "fa-solid fa-heart";
+        }
+        else {
+            SongService.subLikeSong(songId).catch(err => {
+                console.error('Like song failed: ' + err)
+            });
+            span.className = "far fa-heart";
+        }
     }
     togglePlay = (songId) => {
         const audio = document.getElementById(songId);
@@ -121,11 +129,10 @@ class Trending extends React.Component {
                                     </div>
                                     <div className="card-playing-horizontal-footer">
                                         <a
-                                            onClick={() => this.handleOnClickLike(item)}
                                             title="Like"
                                             aria-label="Like"
                                         >
-                                            <span className="far fa-heart"></span>
+                                            <span id={`like${item.songId}`} className="far fa-heart" onClick={() => this.handleOnClickLike(item.songId)}></span>
                                         </a>
                                         <a
                                             onClick={() => this.handleDownloadSong(item.filePath)}
