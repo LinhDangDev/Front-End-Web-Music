@@ -51,19 +51,19 @@ const NavBar = () => {
                     </a>
 
                     <li>
-                        <a href="#explore">Explore</a>
+                        <a href="http://localhost:3000/#explore">Explore</a>
                     </li>
                     <li>
-                        <a href="#featured_creators">Featured Creators</a>
+                        <a href="http://localhost:3000/#featured_creators">Featured Creators</a>
                     </li>
                     <li>
-                        <a href="#trending">Trending</a>
+                        <a href="http://localhost:3000/#trending">Trending</a>
                     </li>
                     <li>
-                        <a href="#category">Category</a>
+                        <a href="http://localhost:3000/#category">Category</a>
                     </li>
                     <li>
-                        <a href="#popular_artists">Popular Artists</a>
+                        <a href="http://localhost:3000/#popular_artists">Popular Artists</a>
                     </li>
                 </ul>
             </ul>

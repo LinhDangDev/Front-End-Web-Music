@@ -8,6 +8,7 @@ const Category = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        
         const response = await GenreService.getAll();
         if (response.code === 1000) {
           setCategoryData(response.result);
