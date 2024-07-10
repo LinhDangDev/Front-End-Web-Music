@@ -107,14 +107,14 @@ class Songs extends React.Component {
     render() {
         const { currentSongIndex, isPlaying, isLiked } = this.state;
         return (
-            <>
-                <div>
+            
+                <div className='app-container'>
                     <Loader />
                     <NavBar />
                     <SupportChatMode />
-                    <SearchMode />
                     <HeaderHero />
-                    <main>
+                    
+                    <main className="user-page">
                         {this.state.album !== null && (
                             <>
                                 <PlaylistPost
@@ -147,7 +147,7 @@ class Songs extends React.Component {
                     <Footer />
                     <Backtotop />
                 </div>
-            </>
+
         );
     }
 }
