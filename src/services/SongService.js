@@ -12,9 +12,16 @@ class SongService {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${accessToken}`
             }
-        }).then(res => res.json())
-            .catch(err => {
-                console.error('Get all songs failed: ' + err);
+        })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`Error fetching songs: ${res.status} ${res.statusText}`);
+                }
+                return res.json(); 
+            })
+            .catch(error => {
+                console.error('Get all songs failed:', error);
+                throw error; 
             });
     }
     likeSong(id) {

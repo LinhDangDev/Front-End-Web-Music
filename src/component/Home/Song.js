@@ -48,7 +48,6 @@ const Song = () => {
     const audio = audioRef.current;
     if (isPlaying) {
       audio.pause();
-      
     } else {
       audio.play();
     }
@@ -73,6 +72,18 @@ const Song = () => {
   const handleLoopClick = () => {
     setIsLooping(!isLooping);
     audioRef.current.loop = !isLooping;
+  };
+
+  const handleSkipForward = () => {
+    const audio = audioRef.current;
+    audio.currentTime += 15; // Skip forward 15 seconds
+    setCurrentTime(audio.currentTime);
+  };
+
+  const handleSkipBackward = () => {
+    const audio = audioRef.current;
+    audio.currentTime -= 15; // Skip backward 15 seconds
+    setCurrentTime(audio.currentTime);
   };
 
   if (isLoading) {
@@ -121,18 +132,21 @@ const Song = () => {
         </div>
 
         <div className="player-controls">
-          <button className="control-button">
-            <span className="far fa-random"></span>
+        <button className="control-button">
+        <span className="far fa-random"></span>
+        </button>
+
+        <button className="control-button" onClick={handleSkipBackward}>
+          <span className="fas fa-backward-fast" title="Back 15s" aria-label="Back 15s"></span>
           </button>
-          <button className="control-button">
-            <span className="far fa-step-backward"></span>
-          </button>
-          <button className="control-button play-pause" onClick={handlePlayPause}>
-            <span className={`far ${isPlaying ? 'fa-pause-circle' : 'fa-play-circle'}`}></span>
-          </button>
-          <button className="control-button">
-            <span className="far fa-step-forward"></span>
-          </button>
+        
+        <button className="control-button play-pause" onClick={handlePlayPause}>
+          <span className={`far ${isPlaying ? 'fa-pause-circle' : 'fa-play-circle'}`}></span>
+        </button>
+
+        <button className="control-button" onClick={handleSkipForward}>
+        <span className="fas fa-forward-fast" title="Forward 15s" aria-label="Forward 15s"></span> 
+        </button>
           <button className="control-button" onClick={handleLoopClick}>
             <span className={`far fa-refresh ${isLooping ? 'active' : ''}`}></span>
           </button>
@@ -156,4 +170,4 @@ const Song = () => {
   );
 };
 
-export default Song;
+export default Song; 

@@ -109,7 +109,7 @@ class Trending extends React.Component {
                                                 onClick={() => this.togglePlay(item.songId)}
                                             ></span>
                                         </div>
-                                        <Link to={`/song/${item.songId}`}>
+                                        <Link to={`/songs/${item.songId}`}>
                                             <img src={`http://localhost:8080/img/${item.coverImage}`} alt={item.songTitle} />
                                         </Link>
                                         <audio id={item.songId} ref={(audio) => { this.audioElement = audio; }}>
