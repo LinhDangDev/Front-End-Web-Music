@@ -1,6 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 const PlayListPost = ({ playlist, onSongClick, isPlaying, onLikeClick, isLiked, currentSongIndex }) => {
+    const handleDownload = async (fileName) => {
+        var link = `http://localhost:8080/music/${fileName}`;
+        // create custom fetch for user to download
+        const response = await fetch(link);
+        const blob = await response.blob();
+
+        const url = window.URL.createObjectURL(new Blob([blob]));
+
+        const aTag = document.createElement('a');
+        aTag.href = url;
+        aTag.setAttribute('download', fileName);
+        document.body.appendChild(aTag);
+        aTag.click();
+
+        document.body.removeChild(aTag);
+    }
     return (
         <section className="section-playlist-post">
             <div className="section-playlist-post-header">
@@ -14,13 +30,12 @@ const PlayListPost = ({ playlist, onSongClick, isPlaying, onLikeClick, isLiked, 
                     <div
                         key={index}
                         className={`section-playlist-post-play-card ${currentSongIndex === index ? 'active' : ''}`}
-                        onClick={() => onSongClick(index)}
                     >
                         <div>
                             {isPlaying && currentSongIndex === index ? (
                                 <span className="far fa-pause" title="Pause" aria-label="Pause"></span>
                             ) : (
-                                <span className="far fa-play" title="Play" aria-label="Play"></span>
+                                <span className="far fa-play" title="Play" aria-label="Play" onClick={() => onSongClick(index)}></span>
                             )}
                             <h4>
                                 <Link to={`/song/${song.songId}`}>{song.songTitle}</Link>
@@ -28,7 +43,7 @@ const PlayListPost = ({ playlist, onSongClick, isPlaying, onLikeClick, isLiked, 
                         </div>
                         <div>
                             <div>
-                                <span className="far fa-download" title="Download" aria-label="Download"></span>
+                                <span className="far fa-download" title="Download" aria-label="Download" onClick={() => handleDownload(song.filePath)}></span>
                                 <span
                                     className={`far fa-heart ${isLiked && currentSongIndex === index ? 'liked' : ''}`}
                                     onClick={onLikeClick}

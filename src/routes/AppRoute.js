@@ -21,7 +21,7 @@ const AppRoutes = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/authenticate" element={<Authenticate />} />
                 <Route path="/" element={<Home />} />
-                <Route path="/album" element={<Album />} />
+                <Route path="/album/:albumId" element={<Album />} />
                 <Route path="/artist" element={<Artist />} />
                 <Route path="/song" element={<Song />} />
                 <Route path="/all-categories" element={<AllCategory />} />
@@ -33,6 +33,7 @@ const AppRoutes = () => {
                 <Route path="/verify-otp" element={<VerifyOtp />} />
                 <Route path="/change-password" element={<ChangePassword />} />
                 <Route path="/artist/:artistId/songs" element={<Artist />} />
+
 
 
 

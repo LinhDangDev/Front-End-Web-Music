@@ -145,11 +145,11 @@ class Trending extends React.Component {
     }
 
 };
-function splitArrayGroup(arrAlbums) {
+function splitArrayGroup(arrSongs) {
     let chunkSize = 3; // Kích thước của mỗi mảng con
     let groupedArray = [];
-    for (let i = 0; i < arrAlbums.length; i += chunkSize) {
-        groupedArray.push(arrAlbums.slice(i, i + chunkSize));
+    for (let i = 0; i < arrSongs.length; i += chunkSize) {
+        groupedArray.push(arrSongs.slice(i, i + chunkSize));
     }
     return groupedArray;
 }
