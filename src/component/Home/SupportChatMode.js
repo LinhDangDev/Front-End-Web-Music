@@ -99,9 +99,8 @@ const SupportChatMode = () => {
           {messages.map((message, index) => (
             <div
               key={index}
-              className={`section-message-${
-                message.role === "assistant" ? "user" : message.role
-              }`}
+              className={`section-message-${message.role === "assistant" ? "user" : message.role
+                }`}
             >
               {message.role === "user" && (
                 <img src="images/avatar/avatar-1.png" alt="" />
@@ -114,7 +113,7 @@ const SupportChatMode = () => {
 
         <div className="support-chat-mode-footer">
           <form onSubmit={sendMessage}>
-            <span className="far fa-paperclip" onClick={() => {}}></span>
+            <span className="far fa-paperclip" onClick={() => { }}></span>
             <textarea
               name=""
               id=""
@@ -125,7 +124,7 @@ const SupportChatMode = () => {
               value={userInput}
               onChange={handleInputChange}
             ></textarea>
-            <span className="far fa-smile" onClick={() => {}}></span>
+            <span className="far fa-smile" onClick={() => { }}></span>
             <button
               type="submit"
               className="far fa-chevron-right"

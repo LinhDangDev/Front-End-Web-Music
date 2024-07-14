@@ -7,7 +7,7 @@ const GenreHeader = ({ genre }) => {
         console.log("Favorite button clicked.");
         if (genre.isFavorite) {
             return "Unfavorite";
-        } else {    
+        } else {
             return "Favorite";
         }
     };
